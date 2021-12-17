@@ -73,13 +73,13 @@ public class HotelService implements IHotelService {
             throw new HotelBookingException(request, "Transaction failure, hotel not available for given dates");
         HotelBookingResponseDTO response = new HotelBookingResponseDTO();
         response.setUserName(request.getUserName());
-        response.setAmount(hotel.getPriceByNight() * days);
+        response.setAmount(hotel.getRoomPrice() * days);
         response.setInterest(interest);
         response.setTotal(response.getAmount() + response.getAmount() * (interest / 100));
         response.setBooking(booking);
-        hotel.setAvailableFrom(dateT);
+        hotel.setDisponibilityDateFrom(dateT);
         hotelRepository.createReservation(hotel);
-        response.setStatusCode(new StatusDTO(200, "Transaction completed successfully"));
+        response.setStatusCode(new StatusDTO("Transaction completed successfully"));
         return response;
     }
 
@@ -122,17 +122,34 @@ public class HotelService implements IHotelService {
      * converts a Hotel entity to a DTO.
      *
      * @param hotel entity to convert.
-     * @return a HotelResponseDTO containing the data of the given Hotel entity.
+     * @return a HotelDTO containing the data of the given Hotel entity.
      */
-    public HotelResponseDTO hotelToDTO(Hotel hotel) {
-        return new HotelResponseDTO(hotel.getHotelCode(),
+    public HotelDTO hotelToDTO(Hotel hotel) {
+        return new HotelDTO(hotel.getHotelCode(),
                 hotel.getName(),
                 hotel.getPlace(),
                 hotel.getRoomType(),
-                hotel.getPriceByNight(),
-                hotel.getAvailableFrom(),
-                hotel.getAvailableTo(),
-                hotel.isReserved());
+                hotel.getRoomPrice(),
+                hotel.getDisponibilityDateFrom(),
+                hotel.getDisponibilityDateTo(),
+                hotel.isBooked());
+    }
+
+    /**
+     * converts a Hotel DTO to a Hotel entity.
+     *
+     * @param hotel entity to convert.
+     * @return a HotelDTO containing the data of the given Hotel entity.
+     */
+    public Hotel dtoToHotel(HotelDTO hotel) {
+        return new Hotel(hotel.getHotelCode(),
+                hotel.getName(),
+                hotel.getPlace(),
+                hotel.getRoomType(),
+                hotel.getRoomPrice(),
+                hotel.getDisponibilityDateFrom(),
+                hotel.getDisponibilityDateTo(),
+                hotel.isBooking(),null);
     }
 
     /**
@@ -145,8 +162,8 @@ public class HotelService implements IHotelService {
      * otherwise, it returns false.
      */
     public boolean isHotelAvailable(Hotel hotel, Date dateFrom, Date dateTo) {
-        return hotel.getAvailableFrom().compareTo(dateFrom) <= 0 &&
-                hotel.getAvailableTo().compareTo(dateTo) >= 0;
+        return hotel.getDisponibilityDateFrom().compareTo(dateFrom) <= 0 &&
+                hotel.getDisponibilityDateTo().compareTo(dateTo) >= 0;
     }
 
     /**
@@ -209,4 +226,33 @@ public class HotelService implements IHotelService {
             throw new PeopleRoomException();
         }
     }
-}
+    public StatusDTO createHotel(HotelDTO hotel){
+        Hotel newHotel = dtoToHotel(hotel);
+        // todo - add hotel to db
+        return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
+    }
+    public StatusDTO modifyHotel(String hotelCode,HotelDTO hotel){
+        Hotel newHotel = getHotelByCode(hotelCode);
+        if(newHotel == null){
+            createHotel(hotel);
+        }else {
+            if (!(hotel.getName().equals(newHotel.getName()))) {
+                newHotel.setName(hotel.getName());
+            }
+            if (!(hotel.getPlace().equals(newHotel.getPlace()))) {
+                newHotel.setPlace(hotel.getPlace());
+            }
+            if (!(hotel.getRoomType().equals(newHotel.getRoomType()))){
+                newHotel.setRoomType(hotel.getRoomType());
+            }
+            if(!(hotel.getRoomPrice() == newHotel.getRoomPrice())){
+                newHotel.setRoomPrice(hotel.getRoomPrice());
+            }
+            if(!(hotel.getDisponibilityDateFrom().equals(newHotel.getDisponibilityDateFrom()))){
+                newHotel.setDisponibilityDateFrom();
+
+            }
+            }
+        }
+
+        }

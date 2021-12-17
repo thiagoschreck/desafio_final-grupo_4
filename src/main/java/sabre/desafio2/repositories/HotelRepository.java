@@ -45,7 +45,7 @@ public class HotelRepository implements IHotelRepository {
     public void createReservation(Hotel hotel) {
         for (Hotel h : this.hotels) {
             if (h.getHotelCode().equals(hotel.getHotelCode())) {
-                h.setAvailableFrom(hotel.getAvailableFrom());
+                h.setDisponibilityDateFrom(hotel.getDisponibilityDateFrom());
             }
         }
     }

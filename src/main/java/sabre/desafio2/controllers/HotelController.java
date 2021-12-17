@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sabre.desafio2.DTOs.HotelAvailableRequestDTO;
-import sabre.desafio2.DTOs.HotelBookingRequestDTO;
-import sabre.desafio2.DTOs.HotelBookingResponseDTO;
-import sabre.desafio2.DTOs.HotelResponseListDTO;
+import sabre.desafio2.DTOs.*;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.services.HotelService;
 
@@ -18,6 +15,16 @@ import java.text.ParseException;
 public class HotelController {
     @Autowired
     HotelService hotelService;
+
+    /**
+     * POST request to create a new hotel.
+     * @param hotel
+     * @return
+     */
+    @PostMapping("/hotels/new")
+    public ResponseEntity<StatusDTO> createHotel(@RequestBody HotelDTO hotel) {
+        return new ResponseEntity<StatusDTO>(hotelService.createHotel(hotel), HttpStatus.OK);
+    }
 
     /**
      * GET request to get a list of registered hotels that meet given filters.

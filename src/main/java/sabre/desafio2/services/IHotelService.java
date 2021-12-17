@@ -14,7 +14,7 @@ public interface IHotelService {
 
     HotelBookingResponseDTO bookHotel(HotelBookingRequestDTO request) throws HotelBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException;
 
-    HotelResponseDTO hotelToDTO(Hotel hotel);
+    HotelDTO hotelToDTO(Hotel hotel);
 
     boolean isHotelAvailable(Hotel hotel, Date dateFrom, Date dateTo);
 

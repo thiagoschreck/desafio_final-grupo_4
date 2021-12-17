@@ -12,12 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class Flight {
     private String flightNumber;
+    private String name;
     private String origin;
     private String destination;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date dateFrom;
+    private Date goingDate;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date dateTo;
+    private Date returnDate;
     private String seatType;
-    private double pricePerPerson;
+    private double flightPrice;
 }

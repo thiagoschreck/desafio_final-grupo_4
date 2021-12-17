@@ -198,7 +198,7 @@ class HotelServiceTest {
         // arrange
         Hotel hotel = createHotel();
         // act
-        HotelResponseDTO hotelDTO = hotelService.hotelToDTO(hotel);
+        HotelDTO hotelDTO = hotelService.hotelToDTO(hotel);
         // assert
         assertEquals(hotel.getHotelCode(), hotelDTO.getHotelCode());
         assertEquals(hotel.getName(), hotelDTO.getName());

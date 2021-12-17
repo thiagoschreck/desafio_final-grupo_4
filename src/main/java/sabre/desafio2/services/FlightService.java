@@ -75,11 +75,11 @@ public class FlightService implements IFlightService {
             throw new FlightBookingException(request, "Transaction failure, no flights found");
         FlightBookingResponseDTO response = new FlightBookingResponseDTO();
         response.setUserName(request.getUserName());
-        response.setAmount(flight.getPricePerPerson());
+        response.setAmount(flight.getFlightPrice());
         response.setInterest(interest);
         response.setTotal(response.getAmount() + response.getAmount() * (interest / 100));
         response.setFlightReservation(booking);
-        response.setStatusCode(new StatusDTO(200, "Transaction completed successfully"));
+        response.setStatusCode(new StatusDTO("Transaction completed successfully"));
         return response;
     }
 
@@ -128,10 +128,10 @@ public class FlightService implements IFlightService {
         return new FlightResponseDTO(flight.getFlightNumber(),
                 flight.getOrigin(),
                 flight.getDestination(),
-                flight.getDateFrom(),
-                flight.getDateTo(),
+                flight.getGoingDate(),
+                flight.getReturnDate(),
                 flight.getSeatType(),
-                flight.getPricePerPerson());
+                flight.getFlightPrice());
     }
 
     /**
@@ -149,8 +149,8 @@ public class FlightService implements IFlightService {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return origin.toUpperCase(Locale.ROOT).equals(flight.getOrigin().toUpperCase(Locale.ROOT)) &&
                 destination.toUpperCase(Locale.ROOT).equals(flight.getDestination().toUpperCase(Locale.ROOT)) &&
-                dateF.equals(flight.getDateFrom()) &&
-                dateT.equals(flight.getDateTo());
+                dateF.equals(flight.getGoingDate()) &&
+                dateT.equals(flight.getReturnDate());
     }
 
     /**

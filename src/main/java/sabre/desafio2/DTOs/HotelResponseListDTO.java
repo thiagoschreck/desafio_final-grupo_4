@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class HotelResponseListDTO {
-    List<HotelResponseDTO> hotels;
+    List<HotelDTO> hotels;
 
     public HotelResponseListDTO() {
         this.hotels = new ArrayList<>();

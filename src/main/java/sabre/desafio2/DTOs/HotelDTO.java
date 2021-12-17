@@ -8,15 +8,15 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class HotelResponseDTO {
+public class HotelDTO {
     private String hotelCode;
     private String name;
     private String place;
     private String roomType;
-    private int priceByNight;
+    private int roomPrice;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date availableFrom;
+    private Date disponibilityDateFrom;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date availableTo;
-    private boolean reserved;
+    private Date disponibilityDateTo;
+    private boolean isBooking;
 }
