@@ -25,7 +25,6 @@ public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
     @Query("UPDATE flight SET flight_number = :newFlight.flightNumber, name = :newFlight.name, origin = :newFlight.origin,destinationne = :newFlight.destination,going_date = :newFlight.goingDate,return_date = :newFlight.returnDate, seat_type = :newFlight.seatType, flight_price = :newFlight.priceflight WHERE [flight_number] = :newFlight.flightNumber")
     Flight updateFlight(@Param("newFlight") Flight newFlight);
 
-
     @Query("SELECT flight FROM Flight flight WHERE flight.going_date = :dateFrom AND flight.return_date = :dateTo AND flight.origin = :origin AND flight.destination = :destination ")
     List<Flight> getFlightBy(@Param("dateFrom") Date dateFrom, @Param("dateTo") Date dateTo, @Param("origin") String origin, @Param("destination") String destination);
 
