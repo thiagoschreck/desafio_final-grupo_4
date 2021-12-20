@@ -261,5 +261,5 @@ public class HotelService implements IHotelService {
 
         }
 
-//Delete
+//Deletee
         }
