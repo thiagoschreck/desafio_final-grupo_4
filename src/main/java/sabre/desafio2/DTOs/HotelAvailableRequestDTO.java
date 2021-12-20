@@ -2,7 +2,9 @@ package sabre.desafio2.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.intellij.lang.annotations.Pattern;
+
+import javax.validation.constraints.Pattern;
+
 
 @Data
 @AllArgsConstructor
