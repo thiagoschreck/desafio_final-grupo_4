@@ -6,15 +6,16 @@ import sabre.desafio2.exceptions.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 public interface IFlightService {
-    FlightResponseListDTO getFlights() throws NoFlightsException;
+    List<FlightDTO> getFlights() throws NoFlightsException;
 
-    FlightResponseListDTO availableFlights(FlightAvailableRequestDTO request) throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException;
+    List<FlightDTO> availableFlights(FlightAvailableRequestDTO request) throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException;
 
-    FlightBookingResponseDTO bookFlight(FlightBookingRequestDTO request) throws FlightBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, OriginException;
+    StatusDTO bookFlight(FlightBookingRequestDTO request) throws FlightBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, OriginException;
 
-    FlightResponseDTO flightToDTO(Flight flight);
+    FlightDTO flightToDTO(Flight flight);
 
     boolean isFlightAvailable(Flight flight, String origin, String destination, Date dateF, Date dateT);
 

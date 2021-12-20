@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Hotel;
-import sabre.desafio2.entities.HotelBooking;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.repositories.HotelRepository;
 

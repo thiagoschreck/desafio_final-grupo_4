@@ -19,32 +19,32 @@ public class FlightController {
     // ALTAS
 
     @PostMapping("/flights/new")
-    public ResponseEntity<StatusDTO> addFlight(@RequestBody FlightDTO request) {
-        return new ResponseEntity<>(flightService.addFlight(request), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) {
+        return new ResponseEntity<>(flightService.createFlight(request), HttpStatus.OK);
     }
 
     @PostMapping("/flight-reservation/new")
-    public ResponseEntity<StatusDTO> bookFlight(@RequestBody FlightBookingRequestDTO request)
+    public ResponseEntity<StatusDTO> createReservation(@RequestBody FlightBookingRequestDTO request)
             throws FlightBookingException, ParseException, DestinationException, DateFromException, OriginException {
-        return new ResponseEntity<>(flightService.bookFlight(request), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.createReservation(request), HttpStatus.OK);
     }
 
     // MODIFICACIONES
 
     @PutMapping("/flights/edit")
-    public ResponseEntity<StatusDTO> editFlight(@RequestParam String flightNumber) {
-        return new ResponseEntity<>(flightService.editFlight(flightNumber), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber) {
+        return new ResponseEntity<>(flightService.updateFlight(flightNumber), HttpStatus.OK);
     }
 
     @PutMapping("/flight-reservation/edit")
-    public ResponseEntity<StatusDTO> editReservation(@RequestParam String id) {
-        return new ResponseEntity<>(flightService.editReservation(id), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id) {
+        return new ResponseEntity<>(flightService.updateReservation(id), HttpStatus.OK);
     }
 
     // CONSULTAS
 
     @GetMapping("/flights")
-    public ResponseEntity<List<FlightResponseDTO>> getFlights(@RequestParam(required = false) String dateFrom,
+    public ResponseEntity<List<FlightDTO>> getFlights(@RequestParam(required = false) String dateFrom,
                                                             @RequestParam(required = false) String dateTo,
                                                             @RequestParam(required = false) String origin,
                                                             @RequestParam(required = false) String destination)
