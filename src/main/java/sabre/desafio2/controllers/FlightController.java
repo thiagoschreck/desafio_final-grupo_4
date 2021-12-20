@@ -5,8 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sabre.desafio2.DTOs.*;
-import sabre.desafio2.exceptions.*;
+import sabre.desafio2.exceptions.InvalidDateRangeException;
+import sabre.desafio2.exceptions.InvalidDestinationException;
+import sabre.desafio2.exceptions.InvalidOriginException;
+import sabre.desafio2.exceptions.NoFlightsException;
 import sabre.desafio2.services.FlightService;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -25,7 +29,7 @@ public class FlightController {
 
     @PostMapping("/flight-reservation/new")
     public ResponseEntity<StatusDTO> createReservation(@RequestBody FlightBookingRequestDTO request)
-            throws FlightBookingException, ParseException, DestinationException, DateFromException, OriginException {
+    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
         return new ResponseEntity<>(flightService.createReservation(request), HttpStatus.OK);
     }
 
@@ -48,7 +52,7 @@ public class FlightController {
                                                             @RequestParam(required = false) String dateTo,
                                                             @RequestParam(required = false) String origin,
                                                             @RequestParam(required = false) String destination)
-            throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException, NoFlightsException {
+    throws ParseException, NoFlightsException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
         if (dateFrom == null & dateTo == null & origin == null & destination == null)
             return new ResponseEntity<>(flightService.getFlights(), HttpStatus.OK);
         FlightAvailableRequestDTO data = new FlightAvailableRequestDTO(dateFrom, dateTo, origin, destination);

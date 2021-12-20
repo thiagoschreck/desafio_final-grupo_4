@@ -6,8 +6,11 @@ import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Flight;
 import sabre.desafio2.entities.FlightReservation;
 import sabre.desafio2.entities.Reservation;
-import sabre.desafio2.exceptions.*;
-import sabre.desafio2.repositories.FlightRepository;
+import sabre.desafio2.exceptions.InvalidDateRangeException;
+import sabre.desafio2.exceptions.InvalidDestinationException;
+import sabre.desafio2.exceptions.InvalidOriginException;
+import sabre.desafio2.exceptions.NoFlightsException;
+import sabre.desafio2.repositories.IFlightRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +19,11 @@ import java.util.*;
 @Service
 public class FlightService {
     @Autowired
-    FlightRepository flightRepository = new FlightRepository();
+    IFlightRepository flightRepository;
+
+    public FlightService(IFlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
+    }
 
     // ALTAS
 
@@ -27,7 +34,7 @@ public class FlightService {
     }
 
     public StatusDTO createReservation(FlightBookingRequestDTO request)
-    throws FlightBookingException, ParseException, DestinationException, DateFromException, OriginException {
+    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
         checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
                                                           request.getFlightReservation().getReturnDate(),
                                                           request.getFlightReservation().getOrigin(),
@@ -64,7 +71,7 @@ public class FlightService {
     }
 
     public List<FlightDTO> availableFlights(FlightAvailableRequestDTO request)
-    throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException {
+    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
         checkDatesAndPlaces(request);
         // todo - get list of Flights
         // todo - filter
@@ -137,26 +144,27 @@ public class FlightService {
         return new FlightReservation(reservation, request.getUserName());
     }
 
-    public void checkDatesAndPlaces(FlightAvailableRequestDTO request) throws DateFromException, DestinationException, ParseException, OriginException {
+    public void checkDatesAndPlaces(FlightAvailableRequestDTO request)
+    throws InvalidDateRangeException, ParseException, InvalidDestinationException, InvalidOriginException {
         // date validation
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateTo());
         if (dateF.after(dateT))
-            throw new DateFromException();
+            throw new InvalidDateRangeException();
         // origin and destination validation
         boolean existOrigin = false;
         boolean existDestination = false;
-        for (Flight flight : flightRepository.getFlights()) {
-            if (flight.getOrigin().toUpperCase(Locale.ROOT).equals(request.getOrigin().toUpperCase(Locale.ROOT)))
-                existOrigin = true;
-            if (flight.getDestination().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT)))
-                existDestination = true;
-            if (existOrigin && existDestination)
-                break;
-        }
+//        for (Flight flight : flightRepository.getFlights()) {
+//            if (flight.getOrigin().toUpperCase(Locale.ROOT).equals(request.getOrigin().toUpperCase(Locale.ROOT)))
+//                existOrigin = true;
+//            if (flight.getDestination().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT)))
+//                existDestination = true;
+//            if (existOrigin && existDestination)
+//                break;
+//        }
         if (!existOrigin)
-            throw new OriginException();
+            throw new InvalidOriginException();
         if (!existDestination)
-            throw new DestinationException();
+            throw new InvalidDestinationException();
     }
 }
