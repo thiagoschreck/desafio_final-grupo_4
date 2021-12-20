@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Hotel;
+import sabre.desafio2.entities.HotelBooking;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.repositories.HotelRepository;
 
@@ -182,6 +183,7 @@ public class HotelService implements IHotelService {
         return null;
     }
 
+
     /**
      * aux method to check input of availableHotels method.
      *
@@ -231,28 +233,35 @@ public class HotelService implements IHotelService {
         // todo - add hotel to db
         return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
     }
-    public StatusDTO modifyHotel(String hotelCode,HotelDTO hotel){
+    public StatusDTO modifyHotel(String hotelCode,HotelDTO hotel) {
         Hotel newHotel = getHotelByCode(hotelCode);
-        if(newHotel == null){
-            createHotel(hotel);
-        }else {
+        if (newHotel == null) {
+             createHotel(hotel);
+        } else {
             if (!(hotel.getName().equals(newHotel.getName()))) {
                 newHotel.setName(hotel.getName());
             }
             if (!(hotel.getPlace().equals(newHotel.getPlace()))) {
                 newHotel.setPlace(hotel.getPlace());
             }
-            if (!(hotel.getRoomType().equals(newHotel.getRoomType()))){
+            if (!(hotel.getRoomType().equals(newHotel.getRoomType()))) {
                 newHotel.setRoomType(hotel.getRoomType());
             }
-            if(!(hotel.getRoomPrice() == newHotel.getRoomPrice())){
+            if (!(hotel.getRoomPrice() == newHotel.getRoomPrice())) {
                 newHotel.setRoomPrice(hotel.getRoomPrice());
             }
-            if(!(hotel.getDisponibilityDateFrom().equals(newHotel.getDisponibilityDateFrom()))){
-                newHotel.setDisponibilityDateFrom();
-
+            if (!(hotel.getDisponibilityDateFrom().equals(newHotel.getDisponibilityDateFrom()))) {
+                newHotel.setDisponibilityDateFrom(hotel.getDisponibilityDateFrom());
             }
+            if (!(hotel.getDisponibilityDateTo().equals(newHotel.getDisponibilityDateTo()))) {
+                newHotel.setDisponibilityDateTo(hotel.getDisponibilityDateTo());
             }
         }
+        return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
+
+        }
+        /*public StatusDTO modifyBookingHotel(String id, HotelBooking book){
+          HotelBooking oldBook = getBookingByPeople(book.);
+        }*/
 
         }

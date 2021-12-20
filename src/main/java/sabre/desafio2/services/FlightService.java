@@ -1,9 +1,11 @@
 package sabre.desafio2.services;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Flight;
+import sabre.desafio2.entities.Hotel;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.repositories.FlightRepository;
 
@@ -122,10 +124,11 @@ public class FlightService implements IFlightService {
      * converts a Flight entity to a DTO.
      *
      * @param flight entity to convert.
-     * @return a FlightResponseDTO containing the data of the given Flight entity.
+     * @return a FlightDTO containing the data of the given Flight entity.
      */
-    public FlightResponseDTO flightToDTO(Flight flight) {
-        return new FlightResponseDTO(flight.getFlightNumber(),
+    public FlightDTO flightToDTO(Flight flight) {
+        return new FlightDTO(flight.getFlightNumber(),
+                flight.getName(),
                 flight.getOrigin(),
                 flight.getDestination(),
                 flight.getGoingDate(),
@@ -196,4 +199,49 @@ public class FlightService implements IFlightService {
         if (!existDestination)
             throw new DestinationException();
     }
+    public Flight dtoToFlight(FlightDTO flight) {
+        return new Flight(flight.getFlightNumber(),
+                flight.getName(),
+                flight.getOrigin(),
+                flight.getDestination(),
+                flight.getGoingDate(),
+                flight.getReturnDate(),
+                flight.getSeatType(),
+                flight.getFlightPrice());
+    }
+    public StatusDTO createFlight(FlightDTO flight){
+       Flight newFlight = dtoToFlight(flight);
+        // todo - add hotel to db
+        return new StatusDTO("Vuelo dado de alta/baja/modificado correctamente");
+    }
+    public StatusDTO modifyFlight(String flightNumber,FlightDTO flight){
+        Flight oldFlight = getFlightByNumber(flightNumber);
+        if(oldFlight == null){
+            createFlight(flight);
+        }else {
+            if (!(flight.getName().equals(oldFlight.getName()))) {
+                oldFlight.setName(flight.getName());
+            }
+            if (!(flight.getFlightPrice() == oldFlight.getFlightPrice())) {
+                oldFlight.setFlightPrice(flight.getFlightPrice());
+            }
+            if (!(flight.getReturnDate().equals(oldFlight.getReturnDate()))) {
+                oldFlight.setReturnDate(flight.getReturnDate());
+            }
+            if (!(flight.getGoingDate().equals(oldFlight.getGoingDate()))) {
+                oldFlight.setGoingDate(flight.getGoingDate());
+            }
+            if (!(flight.getDestination().equals(oldFlight.getDestination()))) {
+                oldFlight.setDestination(flight.getDestination());
+            }
+            if (!(flight.getOrigin().equals(oldFlight.getOrigin()))) {
+                oldFlight.setOrigin(flight.getOrigin());
+            }
+            if (!(flight.getSeatType().equals(oldFlight.getSeatType()))) {
+                oldFlight.setSeatType(flight.getSeatType());
+            }
+        }
+        return new StatusDTO("Vuelo dado de alta/baja/modificado correctamente");
+    }
+
 }
