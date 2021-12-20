@@ -1,6 +1,5 @@
 package sabre.desafio2.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,7 +15,6 @@ import sabre.desafio2.DTOs.*;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,7 +26,7 @@ class FlightControllerTest {
     MockMvc mockMvc;
 
     private FlightBookingRequestDTO createFlightBooking() {
-        FlightBookingDTO bookingDTO = new FlightBookingDTO();
+        FlightReservationDTO bookingDTO = new FlightReservationDTO();
         bookingDTO.setFlightNumber("BATU-5536");
         bookingDTO.setOrigin("Buenos Aires");
         bookingDTO.setDestination("Tucumán");

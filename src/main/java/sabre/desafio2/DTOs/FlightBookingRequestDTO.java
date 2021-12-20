@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FlightBookingRequestDTO {
     private String userName;
-    private FlightBookingDTO flightReservation;
+    private FlightReservationDTO flightReservation;
 }

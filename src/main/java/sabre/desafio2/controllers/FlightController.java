@@ -32,12 +32,12 @@ public class FlightController {
     // MODIFICACIONES
 
     @PutMapping("/flights/edit")
-    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightDTO request) {
+    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightDTO request) throws Exception {
         return new ResponseEntity<>(flightService.updateFlight(flightNumber, request), HttpStatus.OK);
     }
 
     @PutMapping("/flight-reservation/edit")
-    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) {
+    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
         return new ResponseEntity<>(flightService.updateReservation(id, request), HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class FlightController {
     }
 
     @GetMapping("/flight-reservations")
-    public ResponseEntity<List<FlightBookingResponseDTO>> getReservations() {
+    public ResponseEntity<List<FlightReservationDTO>> getReservations() {
         return new ResponseEntity<>(flightService.getReservations(), HttpStatus.OK);
     }
 

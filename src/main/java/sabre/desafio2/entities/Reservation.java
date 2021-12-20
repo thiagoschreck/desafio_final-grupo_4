@@ -1,10 +1,15 @@
 package sabre.desafio2.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Data
 public class Reservation {
     @Id
     @Column(name = "reservation_id")

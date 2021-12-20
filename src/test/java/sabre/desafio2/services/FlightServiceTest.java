@@ -55,7 +55,7 @@ class FlightServiceTest {
         peopleList.add(new PeopleDTO("12345678", "Maximiliano", "Pan", "04/03/2000", "maxi@mail.com"));
         PaymentMethodDTO paymentMethod = new PaymentMethodDTO("Debit", "1234-1234-1234-1234", 1);
         // set booking attributes
-        FlightBookingDTO booking = new FlightBookingDTO();
+        FlightReservationDTO booking = new FlightReservationDTO();
         booking.setDateFrom("23/01/2022");
         booking.setDateTo("31/1/2022");
         booking.setOrigin("Cartagena");

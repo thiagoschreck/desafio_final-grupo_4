@@ -2,11 +2,9 @@ package sabre.desafio2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sabre.desafio2.DTOs.FlightAvailableRequestDTO;
-import sabre.desafio2.DTOs.FlightBookingRequestDTO;
-import sabre.desafio2.DTOs.FlightDTO;
-import sabre.desafio2.DTOs.StatusDTO;
+import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Flight;
+import sabre.desafio2.entities.FlightReservation;
 import sabre.desafio2.entities.Reservation;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.repositories.FlightRepository;
@@ -23,94 +21,82 @@ public class FlightService {
     // ALTAS
 
     public StatusDTO createFlight(FlightDTO flight) {
-        Flight newFlight = dtoToFlight(flight);
+        // Flight newFlight = dtoToFlight(flight);
         // todo - add flight to db
         return new StatusDTO("Vuelo dado de alta correctamente");
     }
 
     public StatusDTO createReservation(FlightBookingRequestDTO request)
     throws FlightBookingException, ParseException, DestinationException, DateFromException, OriginException {
-        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getDateFrom(),
-                                                          request.getFlightReservation().getDateTo(),
+        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
+                                                          request.getFlightReservation().getReturnDate(),
                                                           request.getFlightReservation().getOrigin(),
                                                           request.getFlightReservation().getDestination()));
-        String origin = request.getFlightReservation().getOrigin();
-        String destination = request.getFlightReservation().getDestination();
-        String flightNumber = request.getFlightReservation().getFlightNumber();
-        Flight flight = getFlightByNumber(flightNumber);
-        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getFlightReservation().getDateFrom());
-        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getFlightReservation().getDateTo());
-        if (!isFlightAvailable(flight, origin, destination, dateF, dateT))
-            throw new FlightBookingException(request, "Transaction failure, no flights found");
         // todo - add reservation to db
         return new StatusDTO("Reserva de vuelo dada de alta correctamente");
     }
 
     // MODIFICACIONES
 
-    public StatusDTO updateFlight(String flightNumber, FlightDTO flight) {
-        if (flightRepository.findFlightByFlightNumber(flightNumber) == null)
-            // todo - invalid flightNumber exception
-        flightRepository.updateFlight(flight);
+    public StatusDTO updateFlight(String flightNumber, FlightDTO flightDTO) throws Exception {
+        // todo - invalid flightNumber exception
+        // throw new Exception();
+        // Flight flight = dtoToFlight(flightDTO);
+        // todo - update flight to db
         return new StatusDTO("Vuelo modificado correctamente");
     }
 
-    public StatusDTO updateReservation(String id, FlightBookingRequestDTO reservation) {
-        if (flightRepository.findReservationById(id) == null)
-            // todo - invalid id exception
-            flightRepository.updateReservation(reservation);
+    public StatusDTO updateReservation(String id, FlightBookingRequestDTO request) throws Exception {
+        // todo - invalid id exception
+        // throw new Exception();
+        // FlightReservation reservation = dtoToFlightReservation(request);
+        // todo - update reservation to db
         return new StatusDTO("Reserva de vuelo modificada correctamente");
     }
 
     // CONSULTAS
 
-    /**
-     * gets a list of all registered flights.
-     *
-     * @return a list of all registered flights.
-     */
     public List<FlightDTO> getFlights() throws NoFlightsException {
-        List<FlightDTO> listDTO = new ArrayList<>();
-        for (Flight flight : flightRepository.getFlights()) {
-            listDTO.add(flightToDTO(flight));
-        }
-        if (listDTO.isEmpty())
-            throw new NoFlightsException();
-        return listDTO;
+        // todo - get list of Flights
+        List<FlightDTO> flights = new ArrayList<>();
+        // todo - convert flights into DTOs
+        return flights;
     }
 
-    /**
-     * gets a list of all registered flights that meet the filters passed as a parameter.
-     *
-     * @param request DTO containing the filters to apply (dateFrom, dateTo, origin, destination).
-     * @return a DTO containing a list of all registered flights that meet the given filters.
-     */
     public List<FlightDTO> availableFlights(FlightAvailableRequestDTO request)
-            throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException {
+    throws ParseException, DestinationException, DateFromException, OriginException, NoFlightsAvailablesException {
         checkDatesAndPlaces(request);
-        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
-        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateTo());
-        List<FlightDTO> listDTO = new ArrayList<>();
-        for (Flight flight : flightRepository.getFlights()) {
-            if (isFlightAvailable(flight, request.getOrigin(), request.getDestination(), dateF, dateT))
-                listDTO.add(flightToDTO(flight));
-        }
-        if (listDTO.isEmpty())
-            throw new NoFlightsAvailablesException();
-        return listDTO;
+        // todo - get list of Flights
+        // todo - filter
+        List<FlightDTO> flights = new ArrayList<>();
+        // todo - convert flights into DTOs
+        return flights;
+    }
+
+    public List<FlightReservationDTO> getReservations() {
+        // todo - get list of Reservations
+        // todo - filter
+        List<FlightReservationDTO> reservations = new ArrayList<>();
+        // todo - convert reservations into DTOs
+        return reservations;
     }
 
     // BAJAS
 
+    public StatusDTO deleteFlight(String flightNumber) {
+        // todo - check existence
+        // todo - delete flight from db
+        return new StatusDTO("Vuelo dado de baja correctamente");
+    }
+
+    public StatusDTO deleteReservation(String id) {
+        // todo - check existence
+        // todo - delete reservation from db
+        return new StatusDTO("Reserva de vuelo dada de baja correctamente");
+    }
 
     // AUX FUNCTIONS
 
-    /**
-     * converts a Flight entity to a DTO.
-     *
-     * @param flight entity to convert.
-     * @return a FlightDTO containing the data of the given Flight entity.
-     */
     public FlightDTO flightToDTO(Flight flight) {
         return new FlightDTO(flight.getFlightNumber(),
                 flight.getName(),
@@ -136,47 +122,21 @@ public class FlightService {
                 reservations);
     }
 
-    /**
-     * check that a specific flight is available.
-     *
-     * @param flight      flight to check if it is available.
-     * @param origin      place where the flight should depart.
-     * @param destination place where the flight should arrive.
-     * @param dateF       flight departure date.
-     * @param dateT       flight arrival date.
-     * @return true in case the flight matches all the given parameters (origin, destination, dateFrom, dateTo).
-     * otherwise, it returns false.
-     */
-    // todo - replace for query
-    public boolean isFlightAvailable(Flight flight, String origin, String destination, Date dateF, Date dateT) {
-        return origin.toUpperCase(Locale.ROOT).equals(flight.getOrigin().toUpperCase(Locale.ROOT)) &&
-                destination.toUpperCase(Locale.ROOT).equals(flight.getDestination().toUpperCase(Locale.ROOT)) &&
-                dateF.equals(flight.getGoingDate()) &&
-                dateT.equals(flight.getReturnDate());
+    public FlightReservation dtoToFlightReservation(FlightBookingRequestDTO request) throws ParseException {
+        FlightReservationDTO reservationDTO = request.getFlightReservation();
+        Reservation reservation = new Reservation();
+        reservation.setReservationId(reservationDTO.getReservationId());
+        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(reservationDTO.getGoingDate());
+        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(reservationDTO.getReturnDate());
+        reservation.setGoingDate(dateF);
+        reservation.setReturnDate(dateT);
+        reservation.setOrigin(reservationDTO.getOrigin());
+        reservation.setDestination(reservationDTO.getDestination());
+        // todo
+
+        return new FlightReservation(reservation, request.getUserName());
     }
 
-    /**
-     * get a Flight instance from a given flight number.
-     *
-     * @param flightNumber
-     * @return If there is an instance with the flight number, it returns the instance.
-     * otherwise, it returns null.
-     */
-    // todo - replace for query
-    public Flight getFlightByNumber(String flightNumber) {
-        for (Flight flight : flightRepository.getFlights()) {
-            if (flight.getFlightNumber().equals(flightNumber)) {
-                return flight;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * aux method to check input of availableFlights method.
-     *
-     * @param request DTO to check, contains the filters to apply (dateFrom, dateTo, origin, destination).
-     */
     public void checkDatesAndPlaces(FlightAvailableRequestDTO request) throws DateFromException, DestinationException, ParseException, OriginException {
         // date validation
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
