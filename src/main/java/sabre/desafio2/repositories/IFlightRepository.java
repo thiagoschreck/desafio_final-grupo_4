@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
-    @Query("INSERT INTO flight VALUE newFlight")
+    @Query("INSERT INTO flight VALUE :newFlight")
     Flight addFlight(@Param("newFlight") Flight newFlight);
 
     @Query("SELECT flight.flight_number from Flight flight WHERE flight.flight_number = :id")
