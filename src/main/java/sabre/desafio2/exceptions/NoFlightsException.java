@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class NoFlightsException extends Exception{
-    public final String ERROR = "No hay vuelos registrados";
+    public final String ERROR = "There are no registered flights";
 
     public NoFlightsException() {
         super();
