@@ -34,7 +34,7 @@ public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
     List<Flight> getFlightBy(@Param("dateFrom") Date dateFrom, @Param("dateTo") Date dateTo, @Param("origin") String origin, @Param("destination") String destination);
 
     @Query("DELETE FROM flight WHERE flight_number := id")
-    StatusDTO deleteFlightByHotelCode(@Param("id") String id);
+    StatusDTO deleteFlightByFlightNumber(@Param("id") String id);
 
     @Query("DELETE FROM reservation WHERE reservation_id := id")
     StatusDTO deleteFlightReservationByCode(@Param("id") String id);
