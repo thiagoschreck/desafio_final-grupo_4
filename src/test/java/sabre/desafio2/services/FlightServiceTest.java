@@ -37,10 +37,10 @@ class FlightServiceTest {
         flight.setDestination("Buenos Aires");
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse("01/03/2022");
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse("14/03/2022");
-        flight.setDateFrom(dateF);
-        flight.setDateTo(dateT);
+        flight.setGoingDate(dateF);
+        flight.setReturnDate(dateT);
         flight.setSeatType("Economy");
-        flight.setPricePerPerson(39860);
+        flight.setFlightPrice(39860);
         return flight;
     }
 
@@ -77,10 +77,10 @@ class FlightServiceTest {
         // arrange
         List<Flight> flights = flightRepository.getFlights();
         // act
-        FlightResponseListDTO result = flightService.getFlights();
+        List<FlightDTO> result = flightService.getFlights();
         // assert
-        assertEquals(flights.size(), result.getFlights().size());
-        assertEquals(flights.get(0).getFlightNumber(), result.getFlights().get(0).getFlightNumber());
+        assertEquals(flights.size(), result.size());
+        assertEquals(flights.get(0).getFlightNumber(), result.get(0).getFlightNumber());
     }
 
     @Test
@@ -89,11 +89,11 @@ class FlightServiceTest {
         // arrange
         FlightAvailableRequestDTO request = new FlightAvailableRequestDTO("10/02/2022", "24/02/2022", "Bogotá", "Medellín");
         // act
-        FlightResponseListDTO result = flightService.availableFlights(request);
+        List<FlightDTO> result = flightService.availableFlights(request);
         // assert
         assertNotNull(result);
-        assertEquals(1, result.getFlights().size());
-        assertEquals("BOME-4442", result.getFlights().get(0).getFlightNumber());
+        assertEquals(1, result.size());
+        assertEquals("BOME-4442", result.get(0).getFlightNumber());
     }
 
     @Test
@@ -156,51 +156,6 @@ class FlightServiceTest {
         assertEquals("La fecha de ida debe ser menor a la de vuelta", exception.getERROR());
     }
 
-    @Test
-    void bookFlightDebitOK()
-    throws DestinationException, DateFromException, ParseException, OriginException, FlightBookingException {
-        // arrange
-        FlightBookingRequestDTO request = createFlightBooking();
-        // act
-        FlightBookingResponseDTO response = flightService.bookFlight(request);
-        // assert
-        assertEquals(200, response.getStatusCode().getCode());
-        assertEquals("Transaction completed successfully", response.getStatusCode().getMessage());
-        assertEquals(0, response.getInterest());
-        assertEquals(7800.0, response.getTotal());
-    }
-
-    @Test
-    void bookFlightCredit3DuesOK()
-    throws DestinationException, DateFromException, ParseException, OriginException, FlightBookingException {
-        // arrange
-        FlightBookingRequestDTO request = createFlightBooking();
-        PaymentMethodDTO paymentMethod = new PaymentMethodDTO("Credit", "1234-1234-1234-1234", 3);
-        request.getFlightReservation().setPaymentMethod(paymentMethod);
-        // act
-        FlightBookingResponseDTO response = flightService.bookFlight(request);
-        // assert
-        assertEquals(200, response.getStatusCode().getCode());
-        assertEquals("Transaction completed successfully", response.getStatusCode().getMessage());
-        assertEquals(5.0, response.getInterest());
-        assertEquals(8190.0, response.getTotal());
-    }
-
-    @Test
-    void bookFlightCredit9DuesOK()
-    throws DestinationException, DateFromException, ParseException, OriginException, FlightBookingException {
-        // arrange
-        FlightBookingRequestDTO request = createFlightBooking();
-        PaymentMethodDTO paymentMethod = new PaymentMethodDTO("Credit", "1234-1234-1234-1234", 9);
-        request.getFlightReservation().setPaymentMethod(paymentMethod);
-        // act
-        FlightBookingResponseDTO response = flightService.bookFlight(request);
-        // assert
-        assertEquals(200, response.getStatusCode().getCode());
-        assertEquals("Transaction completed successfully", response.getStatusCode().getMessage());
-        assertEquals(10.0, response.getInterest());
-        assertEquals(8580.0, response.getTotal());
-    }
 
     @Test
     void bookFlightNotAvailableDates() {
@@ -209,7 +164,7 @@ class FlightServiceTest {
         request.getFlightReservation().setDateFrom("07/12/2021");
         request.getFlightReservation().setDateTo("09/12/2021");
         // act
-        FlightBookingException exception = assertThrows(FlightBookingException.class, () -> flightService.bookFlight(request));
+        FlightBookingException exception = assertThrows(FlightBookingException.class, () -> flightService.createReservation(request));
         // assert
         assertEquals("Transaction failure, no flights found", exception.getMessage());
     }
@@ -219,14 +174,14 @@ class FlightServiceTest {
         // arrange
         Flight flight = createFlight();
         // act
-        FlightResponseDTO flightDTO = flightService.flightToDTO(flight);
+        FlightDTO flightDTO = flightService.flightToDTO(flight);
         // asset
         assertEquals(flight.getFlightNumber(), flightDTO.getFlightNumber());
         assertEquals(flight.getOrigin(), flightDTO.getOrigin());
         assertEquals(flight.getDestination(), flightDTO.getDestination());
-        assertEquals(flight.getDateFrom(), flightDTO.getDateFrom());
-        assertEquals(flight.getDateTo(), flightDTO.getDateTo());
-        assertEquals(flight.getPricePerPerson(), flightDTO.getPricePerPerson());
+        assertEquals(flight.getGoingDate(), flightDTO.getGoingDate());
+        assertEquals(flight.getReturnDate(), flightDTO.getReturnDate());
+        assertEquals(flight.getFlightPrice(), flightDTO.getFlightPrice());
         assertEquals(flight.getSeatType(), flightDTO.getSeatType());
     }
 
@@ -264,7 +219,7 @@ class FlightServiceTest {
         assertEquals("MEPI-9986", response.getFlightNumber());
         assertEquals("Medellín", response.getOrigin());
         assertEquals("Puerto Iguazú", response.getDestination());
-        assertEquals(41640, response.getPricePerPerson());
+        assertEquals(41640, response.getFlightPrice());
     }
 
     @Test
