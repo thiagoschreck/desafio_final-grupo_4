@@ -62,7 +62,7 @@ public class HotelService implements IHotelService {
      * @return a DTO containing the input given for the reservation, the price and the status of the transaction.
      */
     public HotelBookingResponseDTO bookHotel(HotelBookingRequestDTO request)
-    throws HotelBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException {
+            throws HotelBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException {
         double interest = calculateInterest(request.getBooking().getPaymentMethod());
         checkHotelBookingDTO(request);
         HotelBookingInternalResponseDTO booking = createInternalBooking(request);
@@ -70,6 +70,8 @@ public class HotelService implements IHotelService {
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getDateFrom());
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getDateTo());
         int days = (int) TimeUnit.MILLISECONDS.toDays(Math.abs(dateT.getTime() - dateF.getTime()));
+        if (getHotelByCode(hotel.getHotelCode()) == null)
+            throw new HotelBookingException(request, "Transaction failure, hotel not registered");
         if (!isHotelAvailable(hotel, dateF, dateT))
             throw new HotelBookingException(request, "Transaction failure, hotel not available for given dates");
         HotelBookingResponseDTO response = new HotelBookingResponseDTO();
@@ -85,8 +87,6 @@ public class HotelService implements IHotelService {
     }
 
     /**
-     *
-     *
      * @param request
      * @return
      */
@@ -150,7 +150,7 @@ public class HotelService implements IHotelService {
                 hotel.getRoomPrice(),
                 hotel.getDisponibilityDateFrom(),
                 hotel.getDisponibilityDateTo(),
-                hotel.isBooking(),null);
+                hotel.isBooking(), null);
     }
 
     /**
@@ -228,15 +228,17 @@ public class HotelService implements IHotelService {
             throw new PeopleRoomException();
         }
     }
-    public StatusDTO createHotel(HotelDTO hotel){
+
+    public StatusDTO createHotel(HotelDTO hotel) {
         Hotel newHotel = dtoToHotel(hotel);
         // todo - add hotel to db
         return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
     }
-    public StatusDTO modifyHotel(String hotelCode,HotelDTO hotel) {
+
+    public StatusDTO modifyHotel(String hotelCode, HotelDTO hotel) {
         Hotel newHotel = getHotelByCode(hotelCode);
         if (newHotel == null) {
-             createHotel(hotel);
+            createHotel(hotel);
         } else {
             if (!(hotel.getName().equals(newHotel.getName()))) {
                 newHotel.setName(hotel.getName());
@@ -259,7 +261,7 @@ public class HotelService implements IHotelService {
         }
         return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
 
-        }
+    }
 
 //Deletee
-        }
+}
