@@ -4,20 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.DTOs.*;
 import sabre.desafio2.entities.Hotel;
-import sabre.desafio2.exceptions.*;
-import sabre.desafio2.repositories.HotelRepository;
+import sabre.desafio2.exceptions.InvalidDateRangeException;
+import sabre.desafio2.exceptions.InvalidDestinationException;
+import sabre.desafio2.exceptions.InvalidRoomTypeException;
+import sabre.desafio2.exceptions.NoHotelsException;
+import sabre.desafio2.repositories.IHotelRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class HotelService {
     @Autowired
-    HotelRepository hotelRepository = new HotelRepository();
+    IHotelRepository hotelRepository;
+
+    public HotelService(IHotelRepository hotelRepository) {
+        this.hotelRepository = hotelRepository;
+    }
 
     // ALTAS
 
@@ -28,7 +34,7 @@ public class HotelService {
     }
 
     public StatusDTO createBooking(HotelBookingRequestDTO request)
-    throws ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException {
+    throws ParseException, InvalidDestinationException, InvalidRoomTypeException, InvalidDateRangeException {
         checkHotelBookingDTO(request);
         // todo - add booking to db
         return new StatusDTO("Reserva de vuelo dada de alta correctamente");
@@ -61,7 +67,7 @@ public class HotelService {
     }
 
     public List<HotelDTO> availableHotels(HotelAvailableRequestDTO request)
-    throws DestinationException, DateFromException, ParseException, DateToException, NoHotelsAvailablesException {
+    throws ParseException, InvalidDestinationException, InvalidDateRangeException {
         checkDatesAndDestination(request);
         // todo - get list of hotels
         // todo - filter
@@ -134,23 +140,23 @@ public class HotelService {
      * @param request DTO to check, contains the filters to apply (dateFrom, dateTo, destination).
      */
     public void checkDatesAndDestination(HotelAvailableRequestDTO request)
-            throws DestinationException, DateToException, DateFromException, ParseException {
+            throws ParseException, InvalidDateRangeException, InvalidDestinationException {
         // date validation
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateTo());
         if (dateF.after(dateT))
-            throw new DateFromException();
+            throw new InvalidDateRangeException();
         // destination validation
         if (request.getDestination() == null || request.getDestination().isEmpty())
-            throw new DestinationException();
+            throw new InvalidDestinationException();
         boolean existDestination = false;
-        for (Hotel hotel : hotelRepository.getHotels())
-            if (hotel.getPlace().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT))) {
-                existDestination = true;
-                break;
-            }
+//        for (Hotel hotel : hotelRepository.getHotels())
+//            if (hotel.getPlace().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT))) {
+//                existDestination = true;
+//                break;
+//            }
         if (!existDestination)
-            throw new DestinationException();
+            throw new InvalidDestinationException();
     }
 
     /**
@@ -159,7 +165,7 @@ public class HotelService {
      * @param input DTO to check, contains the data to make the reservation.
      */
     public void checkHotelBookingDTO(HotelBookingRequestDTO input)
-            throws PeopleRoomException, DestinationException, DateFromException, ParseException, DateToException {
+            throws ParseException, InvalidRoomTypeException, InvalidDestinationException, InvalidDateRangeException {
         HotelBookingDTO booking = input.getBooking();
         HotelAvailableRequestDTO request = new HotelAvailableRequestDTO(booking.getDateFrom(), booking.getDateTo(), booking.getDestination());
         // date and destination validation
@@ -169,7 +175,7 @@ public class HotelService {
                 (booking.getPeopleAmount() != 2 && booking.getRoomType().equalsIgnoreCase("DOBLE")) ||
                 (booking.getPeopleAmount() != 3 && booking.getRoomType().equalsIgnoreCase("TRIPLE")) ||
                 (booking.getPeopleAmount() < 4 && booking.getRoomType().equalsIgnoreCase("MÚLTIPLE"))) {
-            throw new PeopleRoomException();
+            throw new InvalidRoomTypeException();
         }
     }
 }

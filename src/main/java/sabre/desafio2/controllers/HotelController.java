@@ -25,7 +25,8 @@ public class HotelController {
     }
 
     @PostMapping("/hotel-booking/new")
-    public ResponseEntity<StatusDTO> createBooking(@RequestBody HotelBookingRequestDTO request) throws PeopleRoomException, DestinationException, DateFromException, ParseException, DateToException {
+    public ResponseEntity<StatusDTO> createBooking(@RequestBody HotelBookingRequestDTO request)
+    throws ParseException, InvalidDestinationException, InvalidRoomTypeException, InvalidDateRangeException {
         return new ResponseEntity<>(hotelService.createBooking(request), HttpStatus.OK);
     }
 
@@ -45,9 +46,9 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public ResponseEntity<List<HotelDTO>> getHotels(@RequestParam(required = false) String dateFrom,
-                                                          @RequestParam(required = false) String dateTo,
-                                                          @RequestParam(required = false) String destination)
-            throws DestinationException, DateFromException, ParseException, DateToException, NoHotelsException, NoHotelsAvailablesException {
+                                                    @RequestParam(required = false) String dateTo,
+                                                    @RequestParam(required = false) String destination)
+    throws ParseException, NoHotelsException, InvalidDestinationException, InvalidDateRangeException {
         if (dateFrom == null & dateTo == null & destination == null)
             return new ResponseEntity<>(hotelService.getHotels(), HttpStatus.OK);
         HotelAvailableRequestDTO data = new HotelAvailableRequestDTO(dateFrom, dateTo, destination);
