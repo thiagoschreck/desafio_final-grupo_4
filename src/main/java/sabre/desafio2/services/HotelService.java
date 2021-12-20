@@ -260,8 +260,6 @@ public class HotelService implements IHotelService {
         return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
 
         }
-        /*public StatusDTO modifyBookingHotel(String id, HotelBooking book){
-          HotelBooking oldBook = getBookingByPeople(book.);
-        }*/
 
+//Delete
         }
