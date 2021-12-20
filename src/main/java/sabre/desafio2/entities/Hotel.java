@@ -32,6 +32,8 @@ public class Hotel {
     @Column(name = "is_booked")
     private boolean isBooked;
 
-    @OneToMany(mappedBy="hotel", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Set<Booking> bookings;
 }

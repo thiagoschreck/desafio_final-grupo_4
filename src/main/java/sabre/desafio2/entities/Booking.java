@@ -20,16 +20,21 @@ public class Booking {
     @Column(name = "room_type")
     private String roomType;
 
+    @OneToOne(mappedBy = "booking")
+    private HotelBooking hotelBooking;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_code")
     private Hotel hotel;
-    @ManyToMany(mappedBy = "bookings", cascade = CascadeType.ALL)
-    private Set<Person> people;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_booking_id", referencedColumnName = "hotel_booking_id"))
-    private HotelBooking hotelBooking;
+
+    @ManyToMany(mappedBy = "bookings",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    private Set<Person> people;
 }
