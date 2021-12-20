@@ -13,28 +13,25 @@ import java.util.List;
 
 @Repository
 public interface IHotelRepository extends JpaRepository<Hotel,Integer> {
-    @Query("INSERT INTO hotel VALUE newHotel")
+    @Query("INSERT INTO hotel VALUE :newHotel")
     Hotel addHotel(@Param("newHotel") Hotel newHotel);
 
-    @Query("SELECT hotel.hotel_code FROM Hotel hotel WHERE hotel.hotel_code := code")
+    @Query("SELECT hotel.hotel_code FROM Hotel hotel WHERE hotel.hotel_code = :code")
     Hotel findHotelByHotelCode(@Param("code")String code);
 
-    @Query("SELECT booking.booking_id FROM Booking booking WHERE booking.booking_id := id ")
-    Booking findBookingBy(@Param("id") String id);
 
-    @Query("UPDATE hotel SET hotel_code:= newHot.hotelCode, name := newHot.name,place:=newHot.place,room_type := newHot.roomType, room_price:=newHot.roomPrice,disponibility_date_from:=newHot.disponibilityDateFrom,disponibility_date_to := newHot.disponibilityDateFrom,is_booked := newHot.isBooked WHERE [hotel_code] = newHot.hotelCode")
+    @Query("UPDATE hotel SET hotel_code = :newHot.hotelCode, name = :newHot.name,place = :newHot.place,room_type =  :newHot.roomType, room_price = :newHot.roomPrice,disponibility_date_from = :newHot.disponibilityDateFrom,disponibility_date_to = :newHot.disponibilityDateFrom,is_booked = :newHot.isBooked WHERE [hotel_code] = :newHot.hotelCode")
     Hotel updateHotel(@Param("newHot") Hotel newHot);
 
-    @Query("UPDATE booking SET booking_id := newHot.bookingId,date_from := newHot.dateFrom,date_to := newHot.dateTo,destination := newHot.destination,people_amount := newHot.peopleAmount,room_type := newHot.roomType WHERE [booking_id] := newHot.bookingId")
-    Booking updateBooking(@Param("id") Booking newHot);
 
-    @Query("SELECT flight FROM Hotel WHERE hotel.disponibility_date_to := dateTo AND hotel.disponibility_date_from := dateFrom AND hotel.place := place")
+
+    @Query("SELECT flight FROM Hotel WHERE hotel.disponibility_date_to = :dateTo AND hotel.disponibility_date_from = :dateFrom AND hotel.place = :place")
     List<Hotel> getHotelBy(@Param("dateFrom") Date dateFrom, @Param("dateTo") Date dateTo, @Param("place") String place);
 
-    @Query("DELETE FROM hotel WHERE booking_id := id")
+    @Query("DELETE FROM hotel WHERE booking_id = :id")
     StatusDTO deleteHotelByBookingId(@Param("id")String id);
 
-    @Query("DELETE FROM booking WHERE booking_id := id")
+    @Query("DELETE FROM booking WHERE booking_id = :id")
     StatusDTO deleteBookingById(@Param("id") String id);
 
 
