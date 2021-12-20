@@ -21,14 +21,10 @@ public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
     @Query("SELECT flight.flight_number from Flight flight WHERE flight.flight_number = :id")
     Flight findFlightByFlightNumber(@Param("id") String id);
 
-    @Query("SELECT reservation.reservation_id FROM FlightReservation reservation WHERE reservation.reservation_id = :id")
-    Reservation findReservationById(@Param("id") String id);
 
     @Query("UPDATE flight SET flight_number = :newFlight.flightNumber, name = :newFlight.name, origin = :newFlight.origin,destinationne = :newFlight.destination,going_date = :newFlight.goingDate,return_date = :newFlight.returnDate, seat_type = :newFlight.seatType, flight_price = :newFlight.priceflight WHERE [flight_number] = :newFlight.flightNumber")
     Flight updateFlight(@Param("newFlight") Flight newFlight);
 
-    @Query("UPDATE reservation SET reservation_id = :newRes.reservationId, going_date = :newRes.goingDate,return_date = :newRes.returnDate,origin = :newRes.origin,destination = :newRes.destination,seats = :newRes.seats , seat_type = :newRes.seatType,payment_method = :newRes.PaymentMethod WHERE [reservation_id] = :newRes.reservationId")
-    Reservation updateReservation(@Param("newRes") Reservation newRes);
 
     @Query("SELECT flight FROM Flight flight WHERE flight.going_date = :dateFrom AND flight.return_date = :dateTo AND flight.origin = :origin AND flight.destination = :destination ")
     List<Flight> getFlightBy(@Param("dateFrom") Date dateFrom, @Param("dateTo") Date dateTo, @Param("origin") String origin, @Param("destination") String destination);
