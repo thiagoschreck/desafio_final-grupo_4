@@ -66,10 +66,10 @@ class HotelServiceTest {
         // arrange
         List<Hotel> hotels = hotelRepository.getHotels();
         // act
-        HotelResponseListDTO result = hotelService.getHotels();
+        List<HotelDTO> result = hotelService.getHotels();
         // assert
-        assertEquals(hotels.size(), result.getHotels().size());
-        assertEquals(hotels.get(0).getHotelCode(), result.getHotels().get(0).getHotelCode());
+        assertEquals(hotels.size(), result.size());
+        assertEquals(hotels.get(0).getHotelCode(), result.get(0).getHotelCode());
     }
 
     @Test
@@ -78,11 +78,11 @@ class HotelServiceTest {
         // arrange
         HotelAvailableRequestDTO request = new HotelAvailableRequestDTO("18/03/2022", "20/03/2022", "Buenos Aires");
         // act
-        HotelResponseListDTO result = hotelService.availableHotels(request);
+        List<HotelDTO> result = hotelService.availableHotels(request);
         // assert
         assertNotNull(result);
-        assertEquals(1, result.getHotels().size());
-        assertEquals("BH-0002", result.getHotels().get(0).getHotelCode());
+        assertEquals(1, result.size());
+        assertEquals("BH-0002", result.get(0).getHotelCode());
     }
 
     @Test

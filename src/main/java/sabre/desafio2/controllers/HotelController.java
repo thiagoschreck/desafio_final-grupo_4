@@ -20,25 +20,25 @@ public class HotelController {
     // ALTAS
 
     @PostMapping("/hotels/new")
-    public ResponseEntity<StatusDTO> newHotel(@RequestBody HotelDTO hotel) {
+    public ResponseEntity<StatusDTO> createHotel(@RequestBody HotelDTO hotel) {
         return new ResponseEntity<>(hotelService.createHotel(hotel), HttpStatus.OK);
     }
 
     @PostMapping("/hotel-booking/new")
-    public ResponseEntity<StatusDTO> newBooking(@RequestBody HotelBookingRequestDTO request) {
-        return new ResponseEntity<>(hotelService.bookHotel(request), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> createBooking(@RequestBody HotelBookingRequestDTO request) throws PeopleRoomException, DestinationException, DateFromException, ParseException, DateToException {
+        return new ResponseEntity<>(hotelService.createBooking(request), HttpStatus.OK);
     }
 
     // MODIFICACIONES
 
     @PutMapping("/hotels/edit")
-    public ResponseEntity<StatusDTO> editHotel(@RequestParam String hotelCode) {
-        return new ResponseEntity<>(hotelService.editHotel(hotelCode), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateHotel(@RequestParam String hotelCode, @RequestBody HotelDTO hotelDTO) throws Exception {
+        return new ResponseEntity<>(hotelService.updateHotel(hotelCode,hotelDTO), HttpStatus.OK);
     }
 
     @PutMapping("/hotel-booking/edit")
-    public ResponseEntity<StatusDTO> editBooking(@RequestParam String id) {
-        return new ResponseEntity<>(hotelService.editBooking(id), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateBooking(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
+        return new ResponseEntity<>(hotelService.updateBooking(id, request), HttpStatus.OK);
     }
 
     // CONSULTAS

@@ -9,114 +9,90 @@ import sabre.desafio2.repositories.HotelRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 @Service
-public class HotelService implements IHotelService {
+public class HotelService {
     @Autowired
     HotelRepository hotelRepository = new HotelRepository();
 
-    /**
-     * gets a list of all registered hotels.
-     *
-     * @return a DTO containing a list of all registered hotels.
-     */
-    public HotelResponseListDTO getHotels() throws NoHotelsException {
-        HotelResponseListDTO listDTO = new HotelResponseListDTO();
-        for (Hotel hotel : hotelRepository.getHotels()) {
-            listDTO.getHotels().add(hotelToDTO(hotel));
-        }
-        if (listDTO.getHotels().isEmpty())
-            throw new NoHotelsException();
-        return listDTO;
+    // ALTAS
+
+    public StatusDTO createHotel(HotelDTO hotel) {
+        // Flight newFlight = dtoToFlight(flight);
+        // todo - add flight to db
+        return new StatusDTO("Vuelo dado de alta correctamente");
     }
 
-    /**
-     * gets a list of all registered hotels that meet the filters passed as a parameter.
-     *
-     * @param request DTO containing the filters to apply (dateFrom, dateTo, destination).
-     * @return a DTO containing a list of all registered hotels that meet the given filters.
-     */
-    public HotelResponseListDTO availableHotels(HotelAvailableRequestDTO request)
-            throws DestinationException, DateFromException, ParseException, DateToException, NoHotelsAvailablesException {
-        checkDatesAndDestination(request);
-        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
-        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateTo());
-        HotelResponseListDTO listDTO = new HotelResponseListDTO();
-        for (Hotel hotel : hotelRepository.getHotels()) {
-            if (hotel.getPlace().equals(request.getDestination()) && isHotelAvailable(hotel, dateF, dateT))
-                listDTO.getHotels().add(hotelToDTO(hotel));
-        }
-        if (listDTO.getHotels().isEmpty())
-            throw new NoHotelsAvailablesException();
-        return listDTO;
-    }
-
-    /**
-     * make a hotel reservation with the data passed as a parameter.
-     *
-     * @param request DTO containing the data to make the reservation.
-     * @return a DTO containing the input given for the reservation, the price and the status of the transaction.
-     */
-    public HotelBookingResponseDTO bookHotel(HotelBookingRequestDTO request)
-            throws HotelBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException {
-        double interest = calculateInterest(request.getBooking().getPaymentMethod());
+    public StatusDTO createBooking(HotelBookingRequestDTO request)
+    throws ParseException, PeopleRoomException, DestinationException, DateFromException, DateToException {
         checkHotelBookingDTO(request);
-        HotelBookingInternalResponseDTO booking = createInternalBooking(request);
-        Hotel hotel = getHotelByCode(booking.getHotelCode());
-        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getDateFrom());
-        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(booking.getDateTo());
-        int days = (int) TimeUnit.MILLISECONDS.toDays(Math.abs(dateT.getTime() - dateF.getTime()));
-        if (getHotelByCode(hotel.getHotelCode()) == null)
-            throw new HotelBookingException(request, "Transaction failure, hotel not registered");
-        if (!isHotelAvailable(hotel, dateF, dateT))
-            throw new HotelBookingException(request, "Transaction failure, hotel not available for given dates");
-        HotelBookingResponseDTO response = new HotelBookingResponseDTO();
-        response.setUserName(request.getUserName());
-        response.setAmount(hotel.getRoomPrice() * days);
-        response.setInterest(interest);
-        response.setTotal(response.getAmount() + response.getAmount() * (interest / 100));
-        response.setBooking(booking);
-        hotel.setDisponibilityDateFrom(dateT);
-        hotelRepository.createReservation(hotel);
-        response.setStatusCode(new StatusDTO("Transaction completed successfully"));
-        return response;
+        // todo - add booking to db
+        return new StatusDTO("Reserva de vuelo dada de alta correctamente");
     }
 
-    /**
-     * @param request
-     * @return
-     */
-    private HotelBookingInternalResponseDTO createInternalBooking(HotelBookingRequestDTO request) {
-        HotelBookingInternalResponseDTO booking = new HotelBookingInternalResponseDTO();
-        booking.setDateFrom(request.getBooking().getDateFrom());
-        booking.setDateTo(request.getBooking().getDateTo());
-        booking.setDestination(request.getBooking().getDestination());
-        booking.setHotelCode(request.getBooking().getHotelCode());
-        booking.setPeopleAmount(request.getBooking().getPeopleAmount());
-        booking.setRoomType(request.getBooking().getRoomType());
-        booking.setPeople(request.getBooking().getPeople());
-        return booking;
+    // MODIFICACIONES
+
+    public StatusDTO updateHotel(String hotelCode, HotelDTO hotelDTO) throws Exception {
+        // todo - invalid flightNumber exception
+        // throw new Exception();
+        // Flight flight = dtoToFlight(flightDTO);
+        // todo - update flight to db
+        return new StatusDTO("Vuelo modificado correctamente");
     }
 
-    /**
-     * calculates the interest of a transaction
-     *
-     * @param payment
-     * @return
-     */
-    private double calculateInterest(PaymentMethodDTO payment) {
-        double interest = 0;
-        if (payment.getType().equalsIgnoreCase("Credit")) {
-            if (payment.getDues() < 4)
-                interest = 5;
-            else
-                interest = 10;
-        }
-        return interest;
+    public StatusDTO updateBooking(String id, FlightBookingRequestDTO request) throws Exception {
+        // todo - invalid id exception
+        // throw new Exception();
+        // todo - update reservation to db
+        return new StatusDTO("Reserva de vuelo modificada correctamente");
     }
+
+    // CONSULTAS
+
+    public List<HotelDTO> getHotels() throws NoHotelsException {
+        // todo - get list of Hotels
+        List<HotelDTO> hotels = new ArrayList<>();
+        // todo - convert hotels into DTOs
+        return hotels;
+    }
+
+    public List<HotelDTO> availableHotels(HotelAvailableRequestDTO request)
+    throws DestinationException, DateFromException, ParseException, DateToException, NoHotelsAvailablesException {
+        checkDatesAndDestination(request);
+        // todo - get list of hotels
+        // todo - filter
+        List<HotelDTO> hotels = new ArrayList<>();
+        // todo - convert hotels into DTOs
+        return hotels;
+    }
+
+    public List<HotelBookingResponseDTO> getBookings() {
+        // todo - get list of Bookings
+        // todo - filter
+        List<HotelBookingResponseDTO> bookings = new ArrayList<>();
+        // todo - convert bookings into DTOs
+        return bookings;
+    }
+
+    // BAJAS
+
+    public StatusDTO deleteHotel(String hotelCode) {
+        // todo - check existence
+        // todo - delete hotel from db
+        return new StatusDTO("Hotel dado de baja correctamente");
+    }
+
+    public StatusDTO deleteBooking(String id) {
+        // todo - check existence
+        // todo - delete booking from db
+        return new StatusDTO("Hotel de vuelo dada de baja correctamente");
+    }
+
+    // AUX FUNCTIONS
 
     /**
      * converts a Hotel entity to a DTO.
@@ -151,37 +127,6 @@ public class HotelService implements IHotelService {
                 hotel.getDisponibilityDateTo(),
                 hotel.isBooking(), null);
     }
-
-    /**
-     * check that a specific hotel is available.
-     *
-     * @param hotel    hotel to check if it is available.
-     * @param dateFrom from which date the hotel must be available.
-     * @param dateTo   until which date the hotel must be available.
-     * @return true in case the hotel fulfill all the given parameters (dateFrom, dateTo).
-     * otherwise, it returns false.
-     */
-    public boolean isHotelAvailable(Hotel hotel, Date dateFrom, Date dateTo) {
-        return hotel.getDisponibilityDateFrom().compareTo(dateFrom) <= 0 &&
-                hotel.getDisponibilityDateTo().compareTo(dateTo) >= 0;
-    }
-
-    /**
-     * get a Hotel instance from a given hotel code.
-     *
-     * @param hotelCode hotel code.
-     * @return If there is an instance with the hotel code, it returns the instance.
-     * otherwise, it returns null.
-     */
-    public Hotel getHotelByCode(String hotelCode) {
-        for (Hotel hotel : hotelRepository.getHotels()) {
-            if (hotel.getHotelCode().equals(hotelCode)) {
-                return hotel;
-            }
-        }
-        return null;
-    }
-
 
     /**
      * aux method to check input of availableHotels method.
@@ -227,40 +172,4 @@ public class HotelService implements IHotelService {
             throw new PeopleRoomException();
         }
     }
-
-    public StatusDTO createHotel(HotelDTO hotel) {
-        Hotel newHotel = dtoToHotel(hotel);
-        // todo - add hotel to db
-        return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
-    }
-
-    public StatusDTO modifyHotel(String hotelCode, HotelDTO hotel) {
-        Hotel newHotel = getHotelByCode(hotelCode);
-        if (newHotel == null) {
-            createHotel(hotel);
-        } else {
-            if (!(hotel.getName().equals(newHotel.getName()))) {
-                newHotel.setName(hotel.getName());
-            }
-            if (!(hotel.getPlace().equals(newHotel.getPlace()))) {
-                newHotel.setPlace(hotel.getPlace());
-            }
-            if (!(hotel.getRoomType().equals(newHotel.getRoomType()))) {
-                newHotel.setRoomType(hotel.getRoomType());
-            }
-            if (!(hotel.getRoomPrice() == newHotel.getRoomPrice())) {
-                newHotel.setRoomPrice(hotel.getRoomPrice());
-            }
-            if (!(hotel.getDisponibilityDateFrom().equals(newHotel.getDisponibilityDateFrom()))) {
-                newHotel.setDisponibilityDateFrom(hotel.getDisponibilityDateFrom());
-            }
-            if (!(hotel.getDisponibilityDateTo().equals(newHotel.getDisponibilityDateTo()))) {
-                newHotel.setDisponibilityDateTo(hotel.getDisponibilityDateTo());
-            }
-        }
-        return new StatusDTO("Hotel dado de alta/baja/modificado correctamente");
-
-    }
-
-//Deletee
 }
