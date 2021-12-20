@@ -32,13 +32,13 @@ public class FlightController {
     // MODIFICACIONES
 
     @PutMapping("/flights/edit")
-    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber) {
-        return new ResponseEntity<>(flightService.updateFlight(flightNumber), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightDTO request) {
+        return new ResponseEntity<>(flightService.updateFlight(flightNumber, request), HttpStatus.OK);
     }
 
     @PutMapping("/flight-reservation/edit")
-    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id) {
-        return new ResponseEntity<>(flightService.updateReservation(id), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) {
+        return new ResponseEntity<>(flightService.updateReservation(id, request), HttpStatus.OK);
     }
 
     // CONSULTAS

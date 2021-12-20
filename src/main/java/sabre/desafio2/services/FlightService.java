@@ -22,7 +22,7 @@ public class FlightService {
 
     // ALTAS
 
-    public StatusDTO createFlight(FlightDTO flight){
+    public StatusDTO createFlight(FlightDTO flight) {
         Flight newFlight = dtoToFlight(flight);
         // todo - add flight to db
         return new StatusDTO("Vuelo dado de alta correctamente");
@@ -48,6 +48,19 @@ public class FlightService {
 
     // MODIFICACIONES
 
+    public StatusDTO updateFlight(String flightNumber, FlightDTO flight) {
+        if (flightRepository.findFlightByFlightNumber(flightNumber) == null)
+            // todo - invalid flightNumber exception
+        flightRepository.updateFlight(flight);
+        return new StatusDTO("Vuelo modificado correctamente");
+    }
+
+    public StatusDTO updateReservation(String id, FlightBookingRequestDTO reservation) {
+        if (flightRepository.findReservationById(id) == null)
+            // todo - invalid id exception
+            flightRepository.updateReservation(reservation);
+        return new StatusDTO("Reserva de vuelo modificada correctamente");
+    }
 
     // CONSULTAS
 
