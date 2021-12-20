@@ -4,14 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sabre.desafio2.DTOs.FlightAvailableRequestDTO;
-import sabre.desafio2.DTOs.FlightBookingRequestDTO;
-import sabre.desafio2.DTOs.FlightBookingResponseDTO;
-import sabre.desafio2.DTOs.FlightResponseListDTO;
+import sabre.desafio2.DTOs.*;
 import sabre.desafio2.exceptions.*;
 import sabre.desafio2.services.FlightService;
-
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -19,19 +16,35 @@ public class FlightController {
     @Autowired
     FlightService flightService;
 
+    // ALTAS
 
-    /**
-     * GET request to get a list of registered flights that meet given filters.
-     *
-     * @param dateFrom    (optional) flight departure date, it is used as a filter.
-     * @param dateTo      (optional) flight arrival date, it is used as a filter.
-     * @param origin      (optional) place of flight departure, it is used as a filter.
-     * @param destination (optional) place of flight arrival, it is used as a parameter.
-     * @return If no parameters are specified, returns a list of all registered flights,
-     * If parameters are specified, returns a list of registered flights that meet this filter.
-     */
+    @PostMapping("/flights/new")
+    public ResponseEntity<StatusDTO> addFlight(@RequestBody FlightDTO request) {
+        return new ResponseEntity<>(flightService.addFlight(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/flight-reservation/new")
+    public ResponseEntity<StatusDTO> bookFlight(@RequestBody FlightBookingRequestDTO request)
+            throws FlightBookingException, ParseException, DestinationException, DateFromException, OriginException {
+        return new ResponseEntity<>(flightService.bookFlight(request), HttpStatus.OK);
+    }
+
+    // MODIFICACIONES
+
+    @PutMapping("/flights/edit")
+    public ResponseEntity<StatusDTO> editFlight(@RequestParam String flightNumber) {
+        return new ResponseEntity<>(flightService.editFlight(flightNumber), HttpStatus.OK);
+    }
+
+    @PutMapping("/flight-reservation/edit")
+    public ResponseEntity<StatusDTO> editReservation(@RequestParam String id) {
+        return new ResponseEntity<>(flightService.editReservation(id), HttpStatus.OK);
+    }
+
+    // CONSULTAS
+
     @GetMapping("/flights")
-    public ResponseEntity<FlightResponseListDTO> getFlights(@RequestParam(required = false) String dateFrom,
+    public ResponseEntity<List<FlightResponseDTO>> getFlights(@RequestParam(required = false) String dateFrom,
                                                             @RequestParam(required = false) String dateTo,
                                                             @RequestParam(required = false) String origin,
                                                             @RequestParam(required = false) String destination)
@@ -42,15 +55,20 @@ public class FlightController {
         return new ResponseEntity<>(flightService.availableFlights(data), HttpStatus.OK);
     }
 
-    /**
-     * POST request to make a reservation for a specific flight.
-     *
-     * @param request payload that contains the information to make the reservation.
-     * @return response that contains the input data to make the reservation and the transaction result.
-     */
-    @PostMapping("/flight-reservation")
-    public ResponseEntity<FlightBookingResponseDTO> bookFlight(@RequestBody FlightBookingRequestDTO request)
-            throws FlightBookingException, ParseException, PeopleRoomException, DestinationException, DateFromException, OriginException {
-        return new ResponseEntity<>(flightService.bookFlight(request), HttpStatus.OK);
+    @GetMapping("/flight-reservations")
+    public ResponseEntity<List<FlightBookingResponseDTO>> getReservations() {
+        return new ResponseEntity<>(flightService.getReservations(), HttpStatus.OK);
+    }
+
+    // BAJAS
+
+    @DeleteMapping("/flights/delete")
+    public ResponseEntity<StatusDTO> deleteFlight(@RequestParam String flightNumber) {
+        return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/flight-reservation/delete")
+    public ResponseEntity<StatusDTO> deleteReservation(@RequestParam String id) {
+        return new ResponseEntity<>(flightService.deleteReservation(id), HttpStatus.OK);
     }
 }
