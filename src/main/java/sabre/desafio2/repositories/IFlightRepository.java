@@ -15,12 +15,12 @@ import java.util.List;
 
 @Repository
 public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
+    /*
     @Query("INSERT INTO flight VALUE :newFlight")
     Flight addFlight(@Param("newFlight") Flight newFlight);
 
     @Query("SELECT flight.flight_number from Flight flight WHERE flight.flight_number = :id")
     Flight findFlightByFlightNumber(@Param("id") String id);
-
 
     @Query("UPDATE flight SET flight_number = :newFlight.flightNumber, name = :newFlight.name, origin = :newFlight.origin,destinationne = :newFlight.destination,going_date = :newFlight.goingDate,return_date = :newFlight.returnDate, seat_type = :newFlight.seatType, flight_price = :newFlight.priceflight WHERE [flight_number] = :newFlight.flightNumber")
     Flight updateFlight(@Param("newFlight") Flight newFlight);
@@ -33,6 +33,5 @@ public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
 
     @Query("DELETE FROM reservation WHERE reservation_id = :id")
     StatusDTO deleteFlightReservationByCode(@Param("id") String id);
-
-
+     */
 }

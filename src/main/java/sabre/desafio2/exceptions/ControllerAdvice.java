@@ -10,12 +10,12 @@ public class ControllerAdvice {
 
     // region Hotel Exceptions
     @ExceptionHandler(NoHotelsFoundException.class)
-    public ResponseEntity<StatusDTO> NoHotelsFoundException(NoHotelsFoundException exception) {
+    public ResponseEntity<StatusDTO> NoHotelsFound(NoHotelsFoundException exception) {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoHotelsFoundException.class)
-    public ResponseEntity<StatusDTO> InvalidHotelCodeException(InvalidHotelCodeException exception) {
+    @ExceptionHandler(InvalidHotelCodeException.class)
+    public ResponseEntity<StatusDTO> InvalidHotelCode(InvalidHotelCodeException exception) {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);
     }
 
@@ -36,7 +36,7 @@ public class ControllerAdvice {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoHotelsFoundException.class)
+    @ExceptionHandler(InvalidFlightNumberException.class)
     public ResponseEntity<StatusDTO> InvalidFlightNumber(InvalidFlightNumberException exception) {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);
     }
