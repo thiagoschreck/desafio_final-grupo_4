@@ -23,7 +23,7 @@ public class FlightController {
     // ALTAS
 
     @PostMapping("/flights/new")
-    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) {
+    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) throws ParseException, InvalidDateRangeException {
         return new ResponseEntity<>(flightService.createFlight(request), HttpStatus.OK);
     }
 

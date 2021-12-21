@@ -1,5 +1,6 @@
 package sabre.desafio2.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.models.DTOs.*;
@@ -11,6 +12,7 @@ import sabre.desafio2.exceptions.InvalidDestinationException;
 import sabre.desafio2.exceptions.InvalidOriginException;
 import sabre.desafio2.exceptions.NoFlightsException;
 import sabre.desafio2.repositories.IFlightRepository;
+import sabre.desafio2.repositories.IReservationsRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,26 +22,35 @@ import java.util.*;
 public class FlightService {
     @Autowired
     IFlightRepository flightRepository;
+    IReservationsRepository reservationsRepository;
 
-    public FlightService(IFlightRepository flightRepository) {
+    ModelMapper mapper = new ModelMapper();
+
+    public FlightService(IFlightRepository flightRepository, IReservationsRepository reservationsRepository) {
         this.flightRepository = flightRepository;
+        this.reservationsRepository = reservationsRepository;
     }
 
     // ALTAS
 
-    public StatusDTO createFlight(FlightDTO flight) {
-        // Flight newFlight = dtoToFlight(flight);
-        // todo - add flight to db
+    public StatusDTO createFlight(FlightDTO flight) throws InvalidDateRangeException {
+        if (flight.getGoingDate().after(flight.getReturnDate()))
+            throw new InvalidDateRangeException();
+        flightRepository.save(mapper.map(flight, Flight.class));
         return new StatusDTO("Vuelo dado de alta correctamente");
     }
 
     public StatusDTO createReservation(FlightBookingRequestDTO request)
     throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
-        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
-                                                          request.getFlightReservation().getReturnDate(),
-                                                          request.getFlightReservation().getOrigin(),
-                                                          request.getFlightReservation().getDestination()));
-        // todo - add reservation to db
+//        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
+//                                                          request.getFlightReservation().getReturnDate(),
+//                                                          request.getFlightReservation().getOrigin(),
+//                                                          request.getFlightReservation().getDestination()));
+        Reservation reservation = mapper.map(request, Reservation.class);
+        Flight flight = flightRepository.findById(request.getFlightReservation().getFlightNumber()).get();
+        reservation.setFlight(flight);
+        reservation.setDestination(request.getFlightReservation().getDestination());
+        reservationsRepository.save(reservation);
         return new StatusDTO("Reserva de vuelo dada de alta correctamente");
     }
 
@@ -104,6 +115,7 @@ public class FlightService {
 
     // AUX FUNCTIONS
 
+    /*
     public FlightDTO flightToDTO(Flight flight) {
         return new FlightDTO(flight.getFlightNumber(),
                 flight.getName(),
@@ -128,6 +140,8 @@ public class FlightService {
                 flight.getFlightPrice(),
                 reservations);
     }
+
+     */
 
     public FlightReservation dtoToFlightReservation(FlightBookingRequestDTO request) throws ParseException {
         FlightReservationDTO reservationDTO = request.getFlightReservation();
