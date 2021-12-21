@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sabre.desafio2.exceptions.InvalidDateRangeException;
-import sabre.desafio2.exceptions.InvalidDestinationException;
-import sabre.desafio2.exceptions.InvalidOriginException;
-import sabre.desafio2.exceptions.NoFlightsException;
+import sabre.desafio2.exceptions.*;
 import sabre.desafio2.models.DTOs.*;
 import sabre.desafio2.services.FlightService;
 
@@ -23,8 +20,9 @@ public class FlightController {
     // ALTAS
 
     @PostMapping("/flights/new")
-    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) throws ParseException, InvalidDateRangeException {
-        return new ResponseEntity<>(flightService.createFlight(request), HttpStatus.OK);
+    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) throws ParseException, InvalidDateRangeException, FlightNumberAlreadyExistsException {
+        return new ResponseEntity<>(flightService.
+                createFlight(request), HttpStatus.OK);
     }
 
     // MODIFICACIONES

@@ -2,10 +2,7 @@ package sabre.desafio2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sabre.desafio2.exceptions.InvalidDateRangeException;
-import sabre.desafio2.exceptions.InvalidDestinationException;
-import sabre.desafio2.exceptions.InvalidOriginException;
-import sabre.desafio2.exceptions.NoFlightsException;
+import sabre.desafio2.exceptions.*;
 import sabre.desafio2.models.DTOs.FlightAvailableRequestDTO;
 import sabre.desafio2.models.DTOs.FlightDTO;
 import sabre.desafio2.models.DTOs.StatusDTO;
@@ -31,8 +28,10 @@ public class FlightService {
      * @param flightDTO
      * @return
      */
-    public StatusDTO createFlight(FlightDTO flightDTO) throws InvalidDateRangeException, ParseException {
+    public StatusDTO createFlight(FlightDTO flightDTO) throws InvalidDateRangeException, ParseException, FlightNumberAlreadyExistsException {
         Flight flight = dtoToFlight(flightDTO);
+        if (flightRepository.getById(flight.getFlightNumber()) != null)
+            throw new FlightNumberAlreadyExistsException();
         if (flight.getGoingDate().after(flight.getReturnDate()))
             throw new InvalidDateRangeException();
         flightRepository.save(flight);
