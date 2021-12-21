@@ -28,6 +28,12 @@ public class Reservation {
     @OneToOne(mappedBy = "reservation")
     private FlightReservation flightReservation;
 
+    @OneToMany(mappedBy = "bookRes1")
+    private Set<BookingsOrReservations> bookingsOrReservations1;
+
+    @OneToMany(mappedBy = "bookRes2")
+    private Set<BookingsOrReservations> bookingsOrReservations2;
+
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "flight_number")
