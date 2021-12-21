@@ -1,10 +1,13 @@
 package sabre.desafio2.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Data
 public class Booking {
     @Id
     @Column(name = "booking_id")
@@ -22,12 +25,6 @@ public class Booking {
 
     @OneToOne(mappedBy = "booking")
     private HotelBooking hotelBooking;
-
-    @OneToMany(mappedBy = "bookRes1")
-    private Set<Package> package1;
-
-    @OneToMany(mappedBy = "bookRes2")
-    private Set<Package> package2;
 
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
