@@ -1,8 +1,6 @@
 package sabre.desafio2.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,10 +27,10 @@ public class Reservation {
     private FlightReservation flightReservation;
 
     @OneToMany(mappedBy = "bookRes1")
-    private Set<BookingsOrReservations> bookingsOrReservations1;
+    private Set<Package> package1;
 
     @OneToMany(mappedBy = "bookRes2")
-    private Set<BookingsOrReservations> bookingsOrReservations2;
+    private Set<Package> package2;
 
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)

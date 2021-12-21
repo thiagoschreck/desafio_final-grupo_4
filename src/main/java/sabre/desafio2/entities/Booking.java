@@ -24,10 +24,10 @@ public class Booking {
     private HotelBooking hotelBooking;
 
     @OneToMany(mappedBy = "bookRes1")
-    private Set<BookingsOrReservations> bookingsOrReservations1;
+    private Set<Package> package1;
 
     @OneToMany(mappedBy = "bookRes2")
-    private Set<BookingsOrReservations> bookingsOrReservations2;
+    private Set<Package> package2;
 
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
