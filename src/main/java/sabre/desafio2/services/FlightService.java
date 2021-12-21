@@ -2,10 +2,10 @@ package sabre.desafio2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sabre.desafio2.DTOs.*;
-import sabre.desafio2.entities.Flight;
-import sabre.desafio2.entities.FlightReservation;
-import sabre.desafio2.entities.Reservation;
+import sabre.desafio2.models.DTOs.*;
+import sabre.desafio2.models.entities.Flight;
+import sabre.desafio2.models.entities.FlightReservation;
+import sabre.desafio2.models.entities.Reservation;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
 import sabre.desafio2.exceptions.InvalidDestinationException;
 import sabre.desafio2.exceptions.InvalidOriginException;

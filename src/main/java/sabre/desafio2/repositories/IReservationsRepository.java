@@ -1,13 +1,12 @@
 package sabre.desafio2.repositories;
 
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
-import sabre.desafio2.entities.Flight;
-import sabre.desafio2.entities.FlightReservation;
-import sabre.desafio2.entities.Reservation;
+import org.springframework.stereotype.Repository;
+import sabre.desafio2.models.entities.FlightReservation;
+import sabre.desafio2.models.entities.Reservation;
 
-public interface IReservationsRepository extends JpaRepository<FlightReservation,Integer> {
+@Repository
+public interface IReservationsRepository extends JpaRepository<Reservation,Long> {
     /*
     @Query("SELECT reservation.reservation_id FROM FlightReservation reservation WHERE reservation.reservation_id = :id")
     Reservation findReservationById(@Param("id") String id);

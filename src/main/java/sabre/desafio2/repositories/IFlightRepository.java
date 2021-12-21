@@ -1,20 +1,11 @@
 package sabre.desafio2.repositories;
 
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import sabre.desafio2.DTOs.FlightDTO;
-import sabre.desafio2.DTOs.StatusDTO;
-import sabre.desafio2.entities.Flight;
-import sabre.desafio2.entities.Hotel;
-import sabre.desafio2.entities.Reservation;
-
-import java.util.Date;
-import java.util.List;
+import sabre.desafio2.models.entities.Flight;
 
 @Repository
-public interface IFlightRepository  extends JpaRepository<Flight,Integer> {
+public interface IFlightRepository  extends JpaRepository<Flight,String> {
     /*
     @Query("INSERT INTO flight VALUE :newFlight")
     Flight addFlight(@Param("newFlight") Flight newFlight);

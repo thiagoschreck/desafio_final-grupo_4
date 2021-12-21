@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sabre.desafio2.DTOs.*;
 import sabre.desafio2.exceptions.*;
+import sabre.desafio2.models.DTOs.*;
 import sabre.desafio2.services.HotelService;
 
 import java.text.ParseException;

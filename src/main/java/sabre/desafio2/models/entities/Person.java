@@ -1,4 +1,4 @@
-package sabre.desafio2.entities;
+package sabre.desafio2.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

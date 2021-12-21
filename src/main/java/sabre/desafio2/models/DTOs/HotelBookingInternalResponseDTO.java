@@ -1,4 +1,4 @@
-package sabre.desafio2.DTOs;
+package sabre.desafio2.models.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,13 +9,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlightBookingInternalResponseDTO {
+public class HotelBookingInternalResponseDTO {
     private String dateFrom;
     private String dateTo;
-    private String origin;
     private String destination;
-    private String flightNumber;
-    private int seats;
-    private String seatType;
+    private String hotelCode;
+    private int peopleAmount;
+    private String roomType;
     private List<PeopleDTO> people;
 }

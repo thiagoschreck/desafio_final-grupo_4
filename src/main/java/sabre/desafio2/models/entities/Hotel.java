@@ -1,4 +1,4 @@
-package sabre.desafio2.entities;
+package sabre.desafio2.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package sabre.desafio2.entities;
+package sabre.desafio2.models.entities;
 
 import lombok.Data;
 
@@ -25,12 +25,6 @@ public class Reservation {
 
     @OneToOne(mappedBy = "reservation")
     private FlightReservation flightReservation;
-
-    @OneToMany(mappedBy = "bookRes1")
-    private Set<Package> package1;
-
-    @OneToMany(mappedBy = "bookRes2")
-    private Set<Package> package2;
 
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)

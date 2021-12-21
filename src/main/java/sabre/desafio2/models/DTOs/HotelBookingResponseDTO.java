@@ -1,4 +1,4 @@
-package sabre.desafio2.DTOs;
+package sabre.desafio2.models.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlightBookingResponseDTO {
+public class HotelBookingResponseDTO {
     private String userName;
     private double amount;
     private double interest;
     private double total;
-    private FlightBookingInternalResponseDTO flightReservation;
+    private HotelBookingInternalResponseDTO booking;
     private StatusDTO statusCode;
 }

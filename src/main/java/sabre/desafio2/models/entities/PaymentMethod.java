@@ -1,4 +1,4 @@
-package sabre.desafio2.entities;
+package sabre.desafio2.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

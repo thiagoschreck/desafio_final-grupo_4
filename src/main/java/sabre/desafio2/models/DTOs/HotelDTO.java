@@ -1,5 +1,5 @@
-package sabre.desafio2.DTOs;
-//O0
+package sabre.desafio2.models.DTOs;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,15 +8,15 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
-public class FlightDTO {
-    private String flightNumber;
+public class HotelDTO {
+    private String hotelCode;
     private String name;
-    private String origin;
-    private String destination;
+    private String place;
+    private String roomType;
+    private int roomPrice;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date goingDate;
+    private Date disponibilityDateFrom;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
-    private Date returnDate;
-    private String seatType;
-    private double flightPrice;
+    private Date disponibilityDateTo;
+    private boolean isBooking;
 }

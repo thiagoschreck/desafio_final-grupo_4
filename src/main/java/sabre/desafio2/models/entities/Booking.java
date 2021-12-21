@@ -1,4 +1,4 @@
-package sabre.desafio2.entities;
+package sabre.desafio2.models.entities;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,12 +22,6 @@ public class Booking {
 
     @OneToOne(mappedBy = "booking")
     private HotelBooking hotelBooking;
-
-    @OneToMany(mappedBy = "bookRes1")
-    private Set<Package> package1;
-
-    @OneToMany(mappedBy = "bookRes2")
-    private Set<Package> package2;
 
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)

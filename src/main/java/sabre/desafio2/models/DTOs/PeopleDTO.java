@@ -1,4 +1,4 @@
-package sabre.desafio2.DTOs;
+package sabre.desafio2.models.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
