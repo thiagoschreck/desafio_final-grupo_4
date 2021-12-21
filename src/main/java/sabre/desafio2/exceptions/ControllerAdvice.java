@@ -36,6 +36,11 @@ public class ControllerAdvice {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FlightNumberAlreadyExistsException.class)
+    public ResponseEntity<StatusDTO> FlightNumberAlreadyExists(FlightNumberAlreadyExistsException exception) {
+        return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InvalidFlightNumberException.class)
     public ResponseEntity<StatusDTO> InvalidFlightNumber(InvalidFlightNumberException exception) {
         return new ResponseEntity<>(new StatusDTO(exception.getERROR()), HttpStatus.NOT_FOUND);

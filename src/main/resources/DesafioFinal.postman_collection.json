@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "ab6032bd-6997-4fb2-a697-09a8445af241",
+		"name": "Proyecto Final Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alta hotel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"hotelCode\": \"HM-268\",\r\n\"name\": \"Hotel Hilton\",\r\n\"place\": \"Montevideo\",\r\n\"roomType\": \"DOUBLE\",\r\n\"roomPrice\": 500.0,\r\n\"disponibilityDateFrom\": \"26/03/2022\",\r\n\"disponibilityDateTo\": \"26/04/2022\",\r\n\"isBooking\": false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta Vuelo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"flightNumber\": \"EM-200\",\r\n\"name\": \"VueloEm\",\r\n\"origin\": \"Montevideo\",\r\n\"destination\" : \"Santiago de Chile\",\r\n\"goingDate\": \"26/02/2022\",\r\n\"returnDate\": \"20/03/2022\",\r\n\"seatType\" : \"Economy\",\r\n\"flightPrice\": 500.0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flights/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta reserva hotel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"PepitoGomez\",\r\n    \"booking\": {\r\n        \"bookingId\":20\r\n        \"dateFrom\": \"27/03/2022\",\r\n        \"dateTo\": \"30/03/2022\",\r\n        \"destination\" : \"Montevideo\",\r\n        \"hotelCode\": \"HM-268\",\r\n         \"peopleAmount\": 2,\r\n         \"roomType\":\"DOUBLE\",\r\n         \"people\" :[\r\n             {\r\n                 \"dni\":\"12345678\",\r\n                 \"name\" : \"Pepito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1982\",\r\n                 \"mail\":\"arjonamiguel@gmail.com\"\r\n             }\r\n             ,\r\n             {\r\n                 \"dni\":\"13345678\",\r\n                 \"name\" : \"Fulanito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1983\",\r\n                 \"mail\":\"arjonamiguel2@gmail.com\"\r\n             }\r\n         ]\r\n     }\r\n     ,  \"paymentMethod\":{\r\n         \"type\":\"CREDIT\",\r\n         \"number\":\"1234-1234-1234-1234\",\r\n         \"dues\":6\r\n      }\r\n    }\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/hotel-booking/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotel-booking",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta reserva vuelo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"PepitoGom\",\r\n    \"flightReservation\": {\r\n    \"reservationId\": 268,\r\n    \"goingDate\": \"26/02/2022\",\r\n    \"returnDate\": \"20/03/2022\",\r\n    \"origin\": \"Montevideo\",\r\n    \"destination\": \"Santiago de Chile\",\r\n    \"flightNumber\": \"EM-200\",\r\n    \"seats\": 2,\r\n    \"seatType\": \"Economy\",\r\n    \"people\": [\r\n       {  \"dni\":\"12345678\",\r\n                 \"name\" : \"Pepito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1982\",\r\n                 \"mail\":\"arjonamiguel@gmail.com\"\r\n             }\r\n             ,\r\n             {\r\n                 \"dni\":\"13345678\",\r\n                 \"name\" : \"Fulanito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1983\",\r\n                 \"mail\":\"arjonamiguel2@gmail.com\"\r\n             }\r\n         ]\r\n     }\r\n     ,  \"paymentMethod\":{\r\n         \"type\":\"CREDIT\",\r\n         \"number\":\"1234-1234-1234-1234\",\r\n         \"dues\":6\r\n      }\r\n     }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flight-reservation/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservation",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificacion Vuelo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"flightNumber\": \"EM-200\",\r\n\"name\": \"VueloEm\",\r\n\"origin\": \"Montevideo\",\r\n\"destination\" : \"Santiago de Chile\",\r\n\"goingDate\": \"26/02/2022\",\r\n\"returnDate\": \"22/03/2022\",\r\n\"seatType\" : \"First Class\",\r\n\"flightPrice\": 500.0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flights/edit?flightNumber=EM-200\n\n",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights",
+						"edit"
+					],
+					"query": [
+						{
+							"key": "flightNumber",
+							"value": "EM-200\n\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificacion Hotel",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"hotelCode\": \"HM-268\",\r\n\"name\": \"Hotel Hilton\",\r\n\"place\": \"Montevideo\",\r\n\"roomType\": \"TRIPLE\",\r\n\"roomPrice\": 500.0,\r\n\"disponibilityDateFrom\": \"26/03/2022\",\r\n\"disponibilityDateTo\": \"22/04/2022\",\r\n\"isBooking\": false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels/edit?hotelCode=HM-268",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"edit"
+					],
+					"query": [
+						{
+							"key": "hotelCode",
+							"value": "HM-268"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificacion reserva hotel",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"PepitoGomez\",\r\n    \"booking\": {\r\n        \"bookingId\":\"E-20\"\r\n        \"dateFrom\": \"27/03/2022\",\r\n        \"dateTo\": \"10/04/2022\",\r\n        \"destination\" : \"Montevideo\",\r\n        \"hotelCode\": \"HM-268\",\r\n         \"peopleAmount\": 2,\r\n         \"roomType\":\"DOUBLE\",\r\n         \"people\" :[\r\n             {\r\n                 \"dni\":\"12345678\",\r\n                 \"name\" : \"Pepito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1982\",\r\n                 \"mail\":\"arjonamiguel@gmail.com\"\r\n             }\r\n             ,\r\n             {\r\n                 \"dni\":\"13345678\",\r\n                 \"name\" : \"Fulanito\",\r\n                 \"lastname\":\"Gomez\",\r\n                 \"birthDate\":\"10/11/1983\",\r\n                 \"mail\":\"arjonamiguel2@gmail.com\"\r\n             }\r\n         ]\r\n     }\r\n     ,  \"paymentMethod\":{\r\n         \"type\":\"CREDIT\",\r\n         \"number\":\"1234-1234-1234-1234\",\r\n         \"dues\":3\r\n      }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/hotel-booking/edit?id=20",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotel-booking",
+						"edit"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Hoteles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Hoteles Filtro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels?dateFrom=11/02/2022&dateTo=17/03/2022&destination=Buenos Aires\nQuery Params\n",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "11/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "17/03/2022"
+						},
+						{
+							"key": "destination",
+							"value": "Buenos Aires\nQuery Params\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Vuelos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Vuelos Filtro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights?dateFrom=11/02/2022&dateTo=13/02/2022&origin=Buenos Aires&destination=Puerto Iguazu",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "11/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "13/02/2022"
+						},
+						{
+							"key": "origin",
+							"value": "Buenos Aires"
+						},
+						{
+							"key": "destination",
+							"value": "Puerto Iguazu"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado reservas hotel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotel-bookings",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotel-bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado reserva vuelos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flight-reservations",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Baja de un hotel",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels/delete?hotelCode=HM-268",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "hotelCode",
+							"value": "HM-268"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Baja Vuelo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights/delete?flightNumber=EM-200",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "flightNumber",
+							"value": "EM-200"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Baja reserva hotel",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotel-booking/delete?id=20",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotel-booking",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Baja reserva vuelo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost8080:/api/v1/flight-reservation/delete?id=268",
+					"host": [
+						"localhost8080"
+					],
+					"port": "",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservation",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "268"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

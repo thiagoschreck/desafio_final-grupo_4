@@ -10,4 +10,3 @@ public class InvalidFlightNumberException extends Exception {
         super();
     }
 }
-

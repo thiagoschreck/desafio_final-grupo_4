@@ -24,22 +24,11 @@ public class HotelController {
         return new ResponseEntity<>(hotelService.createHotel(hotel), HttpStatus.OK);
     }
 
-    @PostMapping("/hotel-booking/new")
-    public ResponseEntity<StatusDTO> createBooking(@RequestBody HotelBookingRequestDTO request)
-    throws ParseException, InvalidDestinationException, InvalidRoomTypeException, InvalidDateRangeException {
-        return new ResponseEntity<>(hotelService.createBooking(request), HttpStatus.OK);
-    }
-
     // MODIFICACIONES
 
     @PutMapping("/hotels/edit")
     public ResponseEntity<StatusDTO> updateHotel(@RequestParam String hotelCode, @RequestBody HotelDTO hotelDTO) throws Exception {
         return new ResponseEntity<>(hotelService.updateHotel(hotelCode,hotelDTO), HttpStatus.OK);
-    }
-
-    @PutMapping("/hotel-booking/edit")
-    public ResponseEntity<StatusDTO> updateBooking(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
-        return new ResponseEntity<>(hotelService.updateBooking(id, request), HttpStatus.OK);
     }
 
     // CONSULTAS
@@ -55,20 +44,10 @@ public class HotelController {
         return new ResponseEntity<>(hotelService.availableHotels(data), HttpStatus.OK);
     }
 
-    @GetMapping("/hotel-bookings")
-    public ResponseEntity<List<HotelBookingResponseDTO>> getBookings() {
-        return new ResponseEntity<>(hotelService.getBookings(), HttpStatus.OK);
-    }
-
     // BAJAS
 
     @DeleteMapping("/hotels/delete")
     public ResponseEntity<StatusDTO> deleteHotel(@RequestParam String hotelCode) {
         return new ResponseEntity<>(hotelService.deleteHotel(hotelCode), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/hotel-booking/delete")
-    public ResponseEntity<StatusDTO> deleteBooking(@RequestParam String id) {
-        return new ResponseEntity<>(hotelService.deleteBooking(id), HttpStatus.OK);
     }
 }
