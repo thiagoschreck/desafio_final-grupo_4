@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FlightBookingErrorDTO {
-    private FlightBookingRequestDTO booking;
+    private FlightBookingDTO booking;
     private StatusDTO status;
 }

@@ -27,22 +27,11 @@ public class FlightController {
         return new ResponseEntity<>(flightService.createFlight(request), HttpStatus.OK);
     }
 
-    @PostMapping("/flight-reservation/new")
-    public ResponseEntity<StatusDTO> createReservation(@RequestBody FlightBookingRequestDTO request)
-    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
-        return new ResponseEntity<>(flightService.createReservation(request), HttpStatus.OK);
-    }
-
     // MODIFICACIONES
 
     @PutMapping("/flights/edit")
     public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightDTO request) throws Exception {
         return new ResponseEntity<>(flightService.updateFlight(flightNumber, request), HttpStatus.OK);
-    }
-
-    @PutMapping("/flight-reservation/edit")
-    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
-        return new ResponseEntity<>(flightService.updateReservation(id, request), HttpStatus.OK);
     }
 
     // CONSULTAS
@@ -59,20 +48,11 @@ public class FlightController {
         return new ResponseEntity<>(flightService.availableFlights(data), HttpStatus.OK);
     }
 
-    @GetMapping("/flight-reservations")
-    public ResponseEntity<List<FlightReservationDTO>> getReservations() {
-        return new ResponseEntity<>(flightService.getReservations(), HttpStatus.OK);
-    }
-
     // BAJAS
 
     @DeleteMapping("/flights/delete")
-    public ResponseEntity<StatusDTO> deleteFlight(@RequestParam String flightNumber) {
+    public ResponseEntity<StatusDTO> deleteFlight(@RequestParam String flightNumber) throws NoFlightsException {
         return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
     }
 
-    @DeleteMapping("/flight-reservation/delete")
-    public ResponseEntity<StatusDTO> deleteReservation(@RequestParam String id) {
-        return new ResponseEntity<>(flightService.deleteReservation(id), HttpStatus.OK);
-    }
 }

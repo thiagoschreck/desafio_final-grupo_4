@@ -33,13 +33,6 @@ public class HotelService {
         return new StatusDTO("Vuelo dado de alta correctamente");
     }
 
-    public StatusDTO createBooking(HotelBookingRequestDTO request)
-    throws ParseException, InvalidDestinationException, InvalidRoomTypeException, InvalidDateRangeException {
-        checkHotelBookingDTO(request);
-        // todo - add booking to db
-        return new StatusDTO("Reserva de vuelo dada de alta correctamente");
-    }
-
     // MODIFICACIONES
 
     public StatusDTO updateHotel(String hotelCode, HotelDTO hotelDTO) throws Exception {
@@ -48,13 +41,6 @@ public class HotelService {
         // Flight flight = dtoToFlight(flightDTO);
         // todo - update flight to db
         return new StatusDTO("Vuelo modificado correctamente");
-    }
-
-    public StatusDTO updateBooking(String id, FlightBookingRequestDTO request) throws Exception {
-        // todo - invalid id exception
-        // throw new Exception();
-        // todo - update reservation to db
-        return new StatusDTO("Reserva de vuelo modificada correctamente");
     }
 
     // CONSULTAS
@@ -76,26 +62,12 @@ public class HotelService {
         return hotels;
     }
 
-    public List<HotelBookingResponseDTO> getBookings() {
-        // todo - get list of Bookings
-        // todo - filter
-        List<HotelBookingResponseDTO> bookings = new ArrayList<>();
-        // todo - convert bookings into DTOs
-        return bookings;
-    }
-
     // BAJAS
 
     public StatusDTO deleteHotel(String hotelCode) {
         // todo - check existence
         // todo - delete hotel from db
         return new StatusDTO("Hotel dado de baja correctamente");
-    }
-
-    public StatusDTO deleteBooking(String id) {
-        // todo - check existence
-        // todo - delete booking from db
-        return new StatusDTO("Hotel de vuelo dada de baja correctamente");
     }
 
     // AUX FUNCTIONS
@@ -150,11 +122,6 @@ public class HotelService {
         if (request.getDestination() == null || request.getDestination().isEmpty())
             throw new InvalidDestinationException();
         boolean existDestination = false;
-//        for (Hotel hotel : hotelRepository.getHotels())
-//            if (hotel.getPlace().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT))) {
-//                existDestination = true;
-//                break;
-//            }
         if (!existDestination)
             throw new InvalidDestinationException();
     }
