@@ -1,6 +1,6 @@
 # Proyecto Final
 
-<u>Nota de los desarrolladores:</u>
+## Nota de los desarrolladores:
 
 Debido a limitantes de tiempo, nos vimos obligados a dejar de lado parte
 de los requerimientos. Esta decisión de negocio fue tomada con el objetivo
@@ -15,4 +15,4 @@ este desafío final. Debido a esto es que tomamos la anteriormente
 mencionada decisión.
 
 Hasta la fecha, las funcionalidades en las que enfocamos nuestros esfuerzos
-son aquellas pertenecientes a <b>Hotels</b> y <b>Flights</b>.
+son aquellas pertenecientes a **Hotels** y **Flights**.
