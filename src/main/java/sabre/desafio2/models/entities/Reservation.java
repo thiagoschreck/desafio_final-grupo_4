@@ -1,6 +1,8 @@
 package sabre.desafio2.models.entities;
 
 import lombok.Data;
+import sabre.desafio2.models.dtos.Flight.TicketInfoRequestDTO;
+import sabre.desafio2.models.dtos.Flight.TicketRequestDTO;
 
 import javax.persistence.*;
 import java.util.Date;

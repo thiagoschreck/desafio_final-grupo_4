@@ -46,35 +46,4 @@ public class FlightController {
             return new ResponseEntity<>(flightService.getFlights(), HttpStatus.OK);
         return new ResponseEntity<>(flightService.availableFlights(dateFrom, dateTo, origin, destination), HttpStatus.OK);
     }
-
-    /*
-    @PostMapping("/flight-reservation/new")
-    public ResponseEntity<StatusDTO> createReservation(@RequestBody FlightBookingRequestDTO request)
-    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
-        return new ResponseEntity<>(flightService.createReservation(request), HttpStatus.OK);
-    }
-
-    // MODIFICACIONES
-
-
-    @PutMapping("/flight-reservation/edit")
-    public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
-        return new ResponseEntity<>(flightService.updateReservation(id, request), HttpStatus.OK);
-    }
-
-    // CONSULTAS
-
-
-
-    @GetMapping("/flight-reservations")
-    public ResponseEntity<List<FlightReservationDTO>> getReservations() {
-        return new ResponseEntity<>(flightService.getReservations(), HttpStatus.OK);
-    }
-
-    // BAJAS
-
-
-
-
-     */
 }
