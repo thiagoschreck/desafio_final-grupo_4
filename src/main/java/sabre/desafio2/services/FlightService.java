@@ -4,22 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
-import sabre.desafio2.exceptions.InvalidDestinationException;
-import sabre.desafio2.exceptions.InvalidOriginException;
 import sabre.desafio2.exceptions.NoFlightsException;
 import sabre.desafio2.models.dtos.Flight.FlightDTO;
+import sabre.desafio2.models.dtos.Flight.FlightRequestDTO;
 import sabre.desafio2.models.dtos.Shared.StatusDTO;
 import sabre.desafio2.models.entities.Flight;
-import sabre.desafio2.models.entities.FlightReservation;
-import sabre.desafio2.models.entities.Reservation;
 import sabre.desafio2.repositories.IFlightRepository;
 import sabre.desafio2.repositories.IReservationsRepository;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class FlightService {
@@ -34,15 +27,28 @@ public class FlightService {
         this.reservationsRepository = reservationsRepository;
     }
 
-    // ALTAS
-
-    public StatusDTO createFlight(FlightDTO flight) throws InvalidDateRangeException {
+    public StatusDTO createFlight(FlightRequestDTO request)
+    throws ParseException, InvalidDateRangeException {
+        FlightDTO flight = new FlightDTO(request);
         if (flight.getGoingDate().after(flight.getReturnDate()))
             throw new InvalidDateRangeException();
         flightRepository.save(mapper.map(flight, Flight.class));
         return new StatusDTO("Vuelo dado de alta correctamente");
     }
 
+    public StatusDTO updateFlight(String flightNumber, FlightRequestDTO request)
+    throws Exception, InvalidDateRangeException {
+        Flight currentFlight = flightRepository.findById(flightNumber).get();
+        if (currentFlight == null)
+            throw new NoFlightsException();
+        FlightDTO newFlight = new FlightDTO(request);
+        if (newFlight.getGoingDate().after(newFlight.getReturnDate()))
+            throw new InvalidDateRangeException();
+        flightRepository.save(mapper.map(newFlight, Flight.class));
+        return new StatusDTO("Vuelo modificado correctamente");
+    }
+
+    /*
     public StatusDTO createReservation(FlightBookingRequestDTO request)
             throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
 //        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
@@ -59,13 +65,6 @@ public class FlightService {
 
     // MODIFICACIONES
 
-    public StatusDTO updateFlight(String flightNumber, FlightDTO flightDTO) throws Exception {
-        // todo - invalid flightNumber exception
-        // throw new Exception();
-        // Flight flight = dtoToFlight(flightDTO);
-        // todo - update flight to db
-        return new StatusDTO("Vuelo modificado correctamente");
-    }
 
     public StatusDTO updateReservation(String id, FlightBookingRequestDTO request) throws Exception {
         // todo - invalid id exception
@@ -144,7 +143,7 @@ public class FlightService {
                 reservations);
     }
 
-     */
+
 
     public FlightReservation dtoToFlightReservation(FlightBookingRequestDTO request) throws ParseException {
         FlightReservationDTO reservationDTO = request.getFlightReservation();
@@ -184,4 +183,5 @@ public class FlightService {
         if (!existDestination)
             throw new InvalidDestinationException();
     }
+    */
 }

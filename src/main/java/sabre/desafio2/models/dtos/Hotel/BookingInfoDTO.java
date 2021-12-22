@@ -1,12 +1,15 @@
 package sabre.desafio2.models.dtos.Hotel;
 
-import bootcamp.AgenciaTurismo.dtos.Shared.PersonDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sabre.desafio2.models.dtos.Shared.PersonDTO;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.List;
 

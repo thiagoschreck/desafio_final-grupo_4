@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
-import sabre.desafio2.exceptions.InvalidDestinationException;
-import sabre.desafio2.exceptions.InvalidOriginException;
-import sabre.desafio2.exceptions.NoFlightsException;
-import sabre.desafio2.models.dtos.Flight.FlightDTO;
+import sabre.desafio2.models.dtos.Flight.FlightRequestDTO;
 import sabre.desafio2.models.dtos.Shared.StatusDTO;
 import sabre.desafio2.services.FlightService;
 
@@ -20,13 +17,17 @@ public class FlightController {
     @Autowired
     FlightService flightService;
 
-    // ALTAS
-
     @PostMapping("/flights/new")
-    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightDTO request) throws ParseException, InvalidDateRangeException {
+    public ResponseEntity<StatusDTO> createFlight(@RequestBody FlightRequestDTO request) throws InvalidDateRangeException, ParseException {
         return new ResponseEntity<>(flightService.createFlight(request), HttpStatus.OK);
     }
 
+    @PutMapping("/flights/edit")
+    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightRequestDTO request) throws Exception, InvalidDateRangeException {
+        return new ResponseEntity<>(flightService.updateFlight(flightNumber, request), HttpStatus.OK);
+    }
+
+    /*
     @PostMapping("/flight-reservation/new")
     public ResponseEntity<StatusDTO> createReservation(@RequestBody FlightBookingRequestDTO request)
     throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
@@ -35,10 +36,6 @@ public class FlightController {
 
     // MODIFICACIONES
 
-    @PutMapping("/flights/edit")
-    public ResponseEntity<StatusDTO> updateFlight(@RequestParam String flightNumber, @RequestBody FlightDTO request) throws Exception {
-        return new ResponseEntity<>(flightService.updateFlight(flightNumber, request), HttpStatus.OK);
-    }
 
     @PutMapping("/flight-reservation/edit")
     public ResponseEntity<StatusDTO> updateReservation(@RequestParam String id, @RequestBody FlightBookingRequestDTO request) throws Exception {
@@ -75,4 +72,6 @@ public class FlightController {
     public ResponseEntity<StatusDTO> deleteReservation(@RequestParam String id) {
         return new ResponseEntity<>(flightService.deleteReservation(id), HttpStatus.OK);
     }
+
+     */
 }

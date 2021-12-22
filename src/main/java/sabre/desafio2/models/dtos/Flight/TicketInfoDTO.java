@@ -1,10 +1,10 @@
 package sabre.desafio2.models.dtos.Flight;
 
-import bootcamp.AgenciaTurismo.dtos.Shared.PersonDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sabre.desafio2.models.dtos.Shared.PersonDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

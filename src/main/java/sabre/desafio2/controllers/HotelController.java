@@ -22,7 +22,7 @@ public class HotelController {
     HotelService hotelService;
 
     // ALTAS
-
+/*
     @PostMapping("/hotels/new")
     public ResponseEntity<StatusDTO> createHotel(@RequestBody HotelDTO hotel) {
         return new ResponseEntity<>(hotelService.createHotel(hotel), HttpStatus.OK);
@@ -75,4 +75,6 @@ public class HotelController {
     public ResponseEntity<StatusDTO> deleteBooking(@RequestParam String id) {
         return new ResponseEntity<>(hotelService.deleteBooking(id), HttpStatus.OK);
     }
+
+ */
 }

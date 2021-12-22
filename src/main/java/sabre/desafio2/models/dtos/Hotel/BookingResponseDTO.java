@@ -1,8 +1,8 @@
 package sabre.desafio2.models.dtos.Hotel;
 
-import bootcamp.AgenciaTurismo.dtos.Shared.StatusDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import sabre.desafio2.models.dtos.Shared.StatusDTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;

@@ -25,7 +25,7 @@ public class HotelService {
     public HotelService(IHotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
     }
-
+/*
     // ALTAS
 
     public StatusDTO createHotel(HotelDTO hotel) {
@@ -101,12 +101,7 @@ public class HotelService {
 
     // AUX FUNCTIONS
 
-    /**
-     * converts a Hotel entity to a DTO.
-     *
-     * @param hotel entity to convert.
-     * @return a HotelDTO containing the data of the given Hotel entity.
-     */
+
     public HotelDTO hotelToDTO(Hotel hotel) {
         return new HotelDTO(hotel.getHotelCode(),
                 hotel.getName(),
@@ -118,12 +113,7 @@ public class HotelService {
                 hotel.isBooked());
     }
 
-    /**
-     * converts a Hotel DTO to a Hotel entity.
-     *
-     * @param hotel entity to convert.
-     * @return a HotelDTO containing the data of the given Hotel entity.
-     */
+
     public Hotel dtoToHotel(HotelDTO hotel) {
         return new Hotel(hotel.getHotelCode(),
                 hotel.getName(),
@@ -135,11 +125,7 @@ public class HotelService {
                 hotel.isBooking(), null);
     }
 
-    /**
-     * aux method to check input of availableHotels method.
-     *
-     * @param request DTO to check, contains the filters to apply (dateFrom, dateTo, destination).
-     */
+
     public void checkDatesAndDestination(HotelAvailableRequestDTO request)
             throws ParseException, InvalidDateRangeException, InvalidDestinationException {
         // date validation
@@ -160,11 +146,7 @@ public class HotelService {
             throw new InvalidDestinationException();
     }
 
-    /**
-     * aux method to check input of bookHotel method.
-     *
-     * @param input DTO to check, contains the data to make the reservation.
-     */
+
     public void checkHotelBookingDTO(HotelBookingRequestDTO input)
             throws ParseException, InvalidRoomTypeException, InvalidDestinationException, InvalidDateRangeException {
         HotelBookingDTO booking = input.getBooking();
@@ -179,4 +161,6 @@ public class HotelService {
             throw new InvalidRoomTypeException();
         }
     }
+
+ */
 }

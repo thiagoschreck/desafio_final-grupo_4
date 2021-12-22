@@ -20,16 +20,16 @@ public class Flight {
     private String name;
     private String origin;
     private String destination;
+    @Column(name = "seat_type")
+    private String seatType;
+    @Column(name = "flight_price")
+    private Double flightPrice;
     @Column(name = "going_date")
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date goingDate;
     @Column(name = "return_date")
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date returnDate;
-    @Column(name = "seat_type")
-    private String seatType;
-    @Column(name = "flight_price")
-    private double flightPrice;
 
     @OneToMany(mappedBy = "flight",
             cascade = CascadeType.ALL,
