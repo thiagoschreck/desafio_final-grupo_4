@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
 import sabre.desafio2.exceptions.NoFlightsException;
+import sabre.desafio2.exceptions.NoFlightsFoundException;
 import sabre.desafio2.models.dtos.Flight.FlightDTO;
 import sabre.desafio2.models.dtos.Flight.FlightRequestDTO;
 import sabre.desafio2.models.dtos.Shared.StatusDTO;
@@ -13,6 +14,11 @@ import sabre.desafio2.repositories.IFlightRepository;
 import sabre.desafio2.repositories.IReservationsRepository;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
@@ -48,13 +54,48 @@ public class FlightService {
         return new StatusDTO("Vuelo modificado correctamente");
     }
 
+    public StatusDTO deleteFlight(String flightNumber) throws NoFlightsException {
+        if (!flightRepository.existsById(flightNumber))
+            throw new NoFlightsException();
+        flightRepository.deleteById(flightNumber);
+        return new StatusDTO("Vuelo dado de baja correctamente");
+    }
+
+    public List<FlightDTO> getFlights() throws NoFlightsException {
+        List<Flight> flightList = flightRepository.findAll();
+        if (flightList.isEmpty())
+            throw new NoFlightsException();
+        return flightList.stream().map(flightDTO -> mapper.map(flightDTO, FlightDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<FlightDTO> availableFlights(String dateFrom,
+                                            String dateTo,
+                                            String origin,
+                                            String destination)
+    throws NoFlightsException, ParseException, InvalidDateRangeException, NoFlightsFoundException {
+        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(dateFrom);
+        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(dateTo);
+        if (dateF.after(dateT))
+            throw new InvalidDateRangeException();
+        List<FlightDTO> flights = new ArrayList<>();
+        for (FlightDTO flight: getFlights())
+            if (flight.getGoingDate().compareTo(dateF) == 0 ||
+                flight.getReturnDate().compareTo(dateT) == 0 ||
+                flight.getOrigin().equalsIgnoreCase(origin) ||
+                flight.getDestination().equalsIgnoreCase(destination))
+                flights.add(flight);
+        if (flights.isEmpty())
+            throw new NoFlightsFoundException();
+        return flights;
+    }
+
     /*
     public StatusDTO createReservation(FlightBookingRequestDTO request)
-            throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
-//        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
-//                                                          request.getFlightReservation().getReturnDate(),
-//                                                          request.getFlightReservation().getOrigin(),
-//                                                          request.getFlightReservation().getDestination()));
+    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
+        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
+                                                          request.getFlightReservation().getReturnDate(),
+                                                          request.getFlightReservation().getOrigin(),
+                                                          request.getFlightReservation().getDestination()));
         Reservation reservation = mapper.map(request, Reservation.class);
         Flight flight = flightRepository.findById(request.getFlightReservation().getFlightNumber()).get();
         reservation.setFlight(flight);
@@ -62,9 +103,6 @@ public class FlightService {
         reservationsRepository.save(reservation);
         return new StatusDTO("Reserva de vuelo dada de alta correctamente");
     }
-
-    // MODIFICACIONES
-
 
     public StatusDTO updateReservation(String id, FlightBookingRequestDTO request) throws Exception {
         // todo - invalid id exception
@@ -74,25 +112,6 @@ public class FlightService {
         return new StatusDTO("Reserva de vuelo modificada correctamente");
     }
 
-    // CONSULTAS
-
-    public List<FlightDTO> getFlights() throws NoFlightsException {
-        // todo - get list of Flights
-        List<FlightDTO> flights = new ArrayList<>();
-        // todo - convert flights into DTOs
-        return flights;
-    }
-
-    public List<FlightDTO> availableFlights(FlightAvailableRequestDTO request)
-            throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
-        checkDatesAndPlaces(request);
-        // todo - get list of Flights
-        // todo - filter
-        List<FlightDTO> flights = new ArrayList<>();
-        // todo - convert flights into DTOs
-        return flights;
-    }
-
     public List<FlightReservationDTO> getReservations() {
         // todo - get list of Reservations
         // todo - filter
@@ -100,8 +119,6 @@ public class FlightService {
         // todo - convert reservations into DTOs
         return reservations;
     }
-
-    // BAJAS
 
     public StatusDTO deleteFlight(String flightNumber) {
         // todo - check existence
@@ -114,8 +131,6 @@ public class FlightService {
         // todo - delete reservation from db
         return new StatusDTO("Reserva de vuelo dada de baja correctamente");
     }
-
-    // AUX FUNCTIONS
 
     /*
     public FlightDTO flightToDTO(Flight flight) {
@@ -143,8 +158,6 @@ public class FlightService {
                 reservations);
     }
 
-
-
     public FlightReservation dtoToFlightReservation(FlightBookingRequestDTO request) throws ParseException {
         FlightReservationDTO reservationDTO = request.getFlightReservation();
         Reservation reservation = new Reservation();
@@ -170,14 +183,14 @@ public class FlightService {
         // origin and destination validation
         boolean existOrigin = false;
         boolean existDestination = false;
-//        for (Flight flight : flightRepository.getFlights()) {
-//            if (flight.getOrigin().toUpperCase(Locale.ROOT).equals(request.getOrigin().toUpperCase(Locale.ROOT)))
-//                existOrigin = true;
-//            if (flight.getDestination().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT)))
-//                existDestination = true;
-//            if (existOrigin && existDestination)
-//                break;
-//        }
+        for (Flight flight : flightRepository.getFlights()) {
+            if (flight.getOrigin().toUpperCase(Locale.ROOT).equals(request.getOrigin().toUpperCase(Locale.ROOT)))
+                existOrigin = true;
+            if (flight.getDestination().toUpperCase(Locale.ROOT).equals(request.getDestination().toUpperCase(Locale.ROOT)))
+                existDestination = true;
+            if (existOrigin && existDestination)
+                break;
+        }
         if (!existOrigin)
             throw new InvalidOriginException();
         if (!existDestination)
