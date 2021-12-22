@@ -1,6 +1,5 @@
 package sabre.desafio2.services;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
@@ -24,65 +23,69 @@ import java.util.stream.Collectors;
 public class FlightService {
     @Autowired
     IFlightRepository flightRepository;
+    @Autowired
     IReservationsRepository reservationsRepository;
+    @Autowired
+    SharedService sharedService;
 
-    ModelMapper mapper = new ModelMapper();
-
-    public FlightService(IFlightRepository flightRepository, IReservationsRepository reservationsRepository) {
+    public FlightService(IFlightRepository flightRepository,
+                         IReservationsRepository reservationsRepository,
+                         SharedService sharedService) {
         this.flightRepository = flightRepository;
         this.reservationsRepository = reservationsRepository;
+        this.sharedService = sharedService;
     }
 
     public StatusDTO createFlight(FlightRequestDTO request)
-    throws ParseException, InvalidDateRangeException {
+            throws ParseException, InvalidDateRangeException {
         FlightDTO flight = new FlightDTO(request);
         if (flight.getGoingDate().after(flight.getReturnDate()))
             throw new InvalidDateRangeException();
-        flightRepository.save(mapper.map(flight, Flight.class));
-        return new StatusDTO("Vuelo dado de alta correctamente");
+        flightRepository.save(sharedService.mapper.map(flight, Flight.class));
+        return new StatusDTO("Flight reserved successfully");
     }
 
     public StatusDTO updateFlight(String flightNumber, FlightRequestDTO request)
-    throws Exception, InvalidDateRangeException {
+            throws Exception, InvalidDateRangeException {
         Flight currentFlight = flightRepository.findById(flightNumber).get();
         if (currentFlight == null)
             throw new NoFlightsException();
         FlightDTO newFlight = new FlightDTO(request);
         if (newFlight.getGoingDate().after(newFlight.getReturnDate()))
             throw new InvalidDateRangeException();
-        flightRepository.save(mapper.map(newFlight, Flight.class));
-        return new StatusDTO("Vuelo modificado correctamente");
+        flightRepository.save(sharedService.mapper.map(newFlight, Flight.class));
+        return new StatusDTO("Flight modified successfully");
     }
 
     public StatusDTO deleteFlight(String flightNumber) throws NoFlightsException {
         if (!flightRepository.existsById(flightNumber))
             throw new NoFlightsException();
         flightRepository.deleteById(flightNumber);
-        return new StatusDTO("Vuelo dado de baja correctamente");
+        return new StatusDTO("Flight removed successfully");
     }
 
     public List<FlightDTO> getFlights() throws NoFlightsException {
         List<Flight> flightList = flightRepository.findAll();
         if (flightList.isEmpty())
             throw new NoFlightsException();
-        return flightList.stream().map(flightDTO -> mapper.map(flightDTO, FlightDTO.class)).collect(Collectors.toList());
+        return flightList.stream().map(flight -> sharedService.mapper.map(flight, FlightDTO.class)).collect(Collectors.toList());
     }
 
     public List<FlightDTO> availableFlights(String dateFrom,
                                             String dateTo,
                                             String origin,
                                             String destination)
-    throws NoFlightsException, ParseException, InvalidDateRangeException, NoFlightsFoundException {
+            throws NoFlightsException, ParseException, InvalidDateRangeException, NoFlightsFoundException {
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(dateFrom);
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(dateTo);
         if (dateF.after(dateT))
             throw new InvalidDateRangeException();
         List<FlightDTO> flights = new ArrayList<>();
-        for (FlightDTO flight: getFlights())
+        for (FlightDTO flight : getFlights())
             if (flight.getGoingDate().compareTo(dateF) == 0 ||
-                flight.getReturnDate().compareTo(dateT) == 0 ||
-                flight.getOrigin().equalsIgnoreCase(origin) ||
-                flight.getDestination().equalsIgnoreCase(destination))
+                    flight.getReturnDate().compareTo(dateT) == 0 ||
+                    flight.getOrigin().equalsIgnoreCase(origin) ||
+                    flight.getDestination().equalsIgnoreCase(destination))
                 flights.add(flight);
         if (flights.isEmpty())
             throw new NoFlightsFoundException();

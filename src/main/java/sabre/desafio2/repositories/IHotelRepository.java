@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import sabre.desafio2.models.entities.Hotel;
 
 @Repository
-public interface IHotelRepository extends JpaRepository<Hotel,Integer> {
+public interface IHotelRepository extends JpaRepository<Hotel,String> {
     /*
     @Query("INSERT INTO hotel VALUE :newHotel")
     Hotel addHotel(@Param("newHotel") Hotel newHotel);
