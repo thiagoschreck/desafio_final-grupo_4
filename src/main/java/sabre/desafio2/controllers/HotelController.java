@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sabre.desafio2.exceptions.*;
-import sabre.desafio2.models.DTOs.*;
+import sabre.desafio2.exceptions.InvalidDateRangeException;
+import sabre.desafio2.exceptions.InvalidDestinationException;
+import sabre.desafio2.exceptions.InvalidRoomTypeException;
+import sabre.desafio2.exceptions.NoHotelsException;
+import sabre.desafio2.models.dtos.Hotel.HotelDTO;
+import sabre.desafio2.models.dtos.Shared.StatusDTO;
 import sabre.desafio2.services.HotelService;
 
 import java.text.ParseException;

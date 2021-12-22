@@ -2,7 +2,8 @@ package sabre.desafio2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sabre.desafio2.models.DTOs.*;
+import sabre.desafio2.models.dtos.Hotel.HotelDTO;
+import sabre.desafio2.models.dtos.Shared.StatusDTO;
 import sabre.desafio2.models.entities.Hotel;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
 import sabre.desafio2.exceptions.InvalidDestinationException;

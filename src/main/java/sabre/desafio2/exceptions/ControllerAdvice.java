@@ -3,7 +3,6 @@ package sabre.desafio2.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import sabre.desafio2.models.DTOs.StatusDTO;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {

@@ -3,20 +3,23 @@ package sabre.desafio2.services;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sabre.desafio2.models.DTOs.*;
-import sabre.desafio2.models.entities.Flight;
-import sabre.desafio2.models.entities.FlightReservation;
-import sabre.desafio2.models.entities.Reservation;
 import sabre.desafio2.exceptions.InvalidDateRangeException;
 import sabre.desafio2.exceptions.InvalidDestinationException;
 import sabre.desafio2.exceptions.InvalidOriginException;
 import sabre.desafio2.exceptions.NoFlightsException;
+import sabre.desafio2.models.dtos.Flight.FlightDTO;
+import sabre.desafio2.models.dtos.Shared.StatusDTO;
+import sabre.desafio2.models.entities.Flight;
+import sabre.desafio2.models.entities.FlightReservation;
+import sabre.desafio2.models.entities.Reservation;
 import sabre.desafio2.repositories.IFlightRepository;
 import sabre.desafio2.repositories.IReservationsRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class FlightService {
@@ -41,7 +44,7 @@ public class FlightService {
     }
 
     public StatusDTO createReservation(FlightBookingRequestDTO request)
-    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
+            throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
 //        checkDatesAndPlaces(new FlightAvailableRequestDTO(request.getFlightReservation().getGoingDate(),
 //                                                          request.getFlightReservation().getReturnDate(),
 //                                                          request.getFlightReservation().getOrigin(),
@@ -82,7 +85,7 @@ public class FlightService {
     }
 
     public List<FlightDTO> availableFlights(FlightAvailableRequestDTO request)
-    throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
+            throws ParseException, InvalidOriginException, InvalidDestinationException, InvalidDateRangeException {
         checkDatesAndPlaces(request);
         // todo - get list of Flights
         // todo - filter
@@ -159,7 +162,7 @@ public class FlightService {
     }
 
     public void checkDatesAndPlaces(FlightAvailableRequestDTO request)
-    throws InvalidDateRangeException, ParseException, InvalidDestinationException, InvalidOriginException {
+            throws InvalidDateRangeException, ParseException, InvalidDestinationException, InvalidOriginException {
         // date validation
         Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateFrom());
         Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(request.getDateTo());

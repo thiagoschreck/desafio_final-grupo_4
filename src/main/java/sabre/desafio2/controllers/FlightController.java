@@ -8,11 +8,11 @@ import sabre.desafio2.exceptions.InvalidDateRangeException;
 import sabre.desafio2.exceptions.InvalidDestinationException;
 import sabre.desafio2.exceptions.InvalidOriginException;
 import sabre.desafio2.exceptions.NoFlightsException;
-import sabre.desafio2.models.DTOs.*;
+import sabre.desafio2.models.dtos.Flight.FlightDTO;
+import sabre.desafio2.models.dtos.Shared.StatusDTO;
 import sabre.desafio2.services.FlightService;
 
 import java.text.ParseException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
