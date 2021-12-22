@@ -1,5 +1,6 @@
 package sabre.desafio2.models.dtos.Flight;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,12 +28,10 @@ public class FlightDTO {
     @NotNull(message = "The price of the flight has to be specified")
     @Positive(message = "The price of the flight has to be positive")
     private Double flightPrice;
-    @Pattern(regexp = "^([0-2][0-9]|(3)[0-1])(/)(((0)[0-9])|((1)[0-2]))(/)\\d{4}$",
-            message = "Date format must be dd/mm/aaaa")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "The departure date has to be specified")
     private Date goingDate;
-    @Pattern(regexp = "^([0-2][0-9]|(3)[0-1])(/)(((0)[0-9])|((1)[0-2]))(/)\\d{4}$",
-            message = "Date format must be dd/mm/aaaa")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "The arrival date has to be specified")
     private Date returnDate;
 
