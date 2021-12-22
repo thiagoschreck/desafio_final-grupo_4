@@ -1,6 +1,7 @@
 package sabre.desafio2.models.dtos.Flight;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class FlightDTO {
     @NotEmpty(message = "The flight number has to be specified")
     private String flightNumber;

@@ -2,13 +2,14 @@ package sabre.desafio2.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sabre.desafio2.exceptions.*;
+import sabre.desafio2.models.dtos.Flight.FlightDTO;
 import sabre.desafio2.models.dtos.Hotel.HotelDTO;
+import sabre.desafio2.models.dtos.Hotel.HotelRequestDTO;
 import sabre.desafio2.models.dtos.Shared.StatusDTO;
+import sabre.desafio2.models.entities.Flight;
 import sabre.desafio2.models.entities.Hotel;
-import sabre.desafio2.exceptions.InvalidDateRangeException;
-import sabre.desafio2.exceptions.InvalidDestinationException;
-import sabre.desafio2.exceptions.InvalidRoomTypeException;
-import sabre.desafio2.exceptions.NoHotelsException;
+import sabre.desafio2.repositories.IBookingRepository;
 import sabre.desafio2.repositories.IHotelRepository;
 
 import java.text.ParseException;
@@ -16,14 +17,77 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService {
     @Autowired
     IHotelRepository hotelRepository;
+    @Autowired
+    IBookingRepository bookingsRepository;
+    @Autowired
+    SharedService sharedService;
 
-    public HotelService(IHotelRepository hotelRepository) {
+    public HotelService(IHotelRepository hotelRepository,
+                        IBookingRepository bookingsRepository,
+                        SharedService sharedService) {
         this.hotelRepository = hotelRepository;
+        this.bookingsRepository = bookingsRepository;
+        this.sharedService = sharedService;
+    }
+
+    public StatusDTO createBooking(HotelRequestDTO request)
+            throws ParseException, InvalidDateRangeException {
+        HotelDTO hotel = new HotelDTO(request);
+        if (hotel.getAvailableFrom().after(hotel.getAvailableTo()))
+            throw new InvalidDateRangeException();
+        hotelRepository.save(sharedService.mapper.map(hotel, Hotel.class));
+        return new StatusDTO("Hotel booked successfully");
+    }
+
+    public StatusDTO updateHotel(String hotelCode, HotelRequestDTO request)
+            throws Exception, InvalidDateRangeException {
+        Hotel currentHotel = hotelRepository.findById(hotelCode).get();
+        if (currentHotel == null)
+            throw new NoHotelsFoundException();
+        HotelDTO newHotel = new HotelDTO(request);
+        if (newHotel.getAvailableFrom().after(newHotel.getAvailableTo()))
+            throw new InvalidDateRangeException();
+        hotelRepository.save(sharedService.mapper.map(newHotel, Hotel.class));
+        return new StatusDTO("Hotel modified successfully");
+    }
+
+    public StatusDTO deleteHotel(String hotelCode) throws NoHotelsException {
+        if (!hotelRepository.existsById(hotelCode))
+            throw new NoHotelsException();
+        hotelRepository.deleteById(hotelCode);
+        return new StatusDTO("Hotel removed successfully");
+    }
+
+    public List<HotelDTO> getHotels() throws NoHotelsException {
+        List<Hotel> hotelList = hotelRepository.findAll();
+        if (hotelList.isEmpty())
+            throw new NoHotelsException();
+        return hotelList.stream().map(hotel -> sharedService.mapper.map(hotel, HotelDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<HotelDTO> availableHotels(String dateFrom,
+                                          String dateTo,
+                                          String place)
+            throws ParseException, InvalidDateRangeException, NoHotelsFoundException, NoHotelsException {
+        Date dateF = new SimpleDateFormat("dd/MM/yyyy").parse(dateFrom);
+        Date dateT = new SimpleDateFormat("dd/MM/yyyy").parse(dateTo);
+        if (dateF.after(dateT))
+            throw new InvalidDateRangeException();
+        List<HotelDTO> hotels = new ArrayList<>();
+        for (HotelDTO hotel : getHotels())
+            if (hotel.getAvailableFrom().compareTo(dateF) == 0 ||
+                    hotel.getAvailableTo().compareTo(dateT) == 0 ||
+                    hotel.getPlace().equalsIgnoreCase(place))
+                hotels.add(hotel);
+        if (hotels.isEmpty())
+            throw new NoHotelsFoundException();
+        return hotels;
     }
 /*
     // ALTAS
