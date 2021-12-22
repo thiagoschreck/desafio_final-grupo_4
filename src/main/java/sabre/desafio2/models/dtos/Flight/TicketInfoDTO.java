@@ -19,10 +19,10 @@ import java.util.List;
 public class TicketInfoDTO {
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     @NotNull(message = "The departure date has to be specified")
-    private Date dateFrom;
+    private Date goingDate;
     @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     @NotNull(message = "The arrival date has to be specified")
-    Date dateTo;
+    private Date returnDate;
     @NotBlank(message = "The flight origin has to be specified")
     private String origin;
     @NotBlank(message = "The flight destination has to be specified")

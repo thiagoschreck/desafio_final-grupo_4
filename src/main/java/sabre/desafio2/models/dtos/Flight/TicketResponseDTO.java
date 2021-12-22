@@ -10,6 +10,9 @@ import javax.validation.constraints.*;
 @Data
 @AllArgsConstructor
 public class TicketResponseDTO {
+    @NotEmpty(message = "The reservation ID has to be specified")
+    @Positive
+    private long reservationId;
     @NotEmpty(message = "The username has to be specified")
     @Email(message = "The username has to be a valid email address")
     private String userName;
